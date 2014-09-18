@@ -53,13 +53,6 @@ void MainWindow::DeleteItem(QString name_of_table, int id)
     query.bindValue(":id", id);
     query.exec();
     query.next();
-//    if (name_of_table == "object_types")
-//    {
-//        query.prepare("INSERT INTO object_types (name) VALUES (:current_item)");
-//        query.bindValue(":current_item", ui->treeWidget->currentItem()->text(0));
-//        query.exec();
-//        query.next();
-//    }
 }
 
 int MainWindow::Search(QString name_of_table)
@@ -90,30 +83,11 @@ void MainWindow::on_DeleteButton_clicked()
                 DeleteItem("substations", id);
             else
             {
-//                id = Search("object_types");
-//                if (id != NULL)
-//                    DeleteItem("object_types", id);
-//                else
-//                {
-                    id = Search("objects");
-                    if (id != NULL)
-                    {
-//                        QSqlQuery q;
-//                        q.prepare("SELECT object_type_id FROM objects WHERE id = :id;");
-//                        q.bindValue(":id", id);
-//                        q.exec();
-//                        q.next();
-//                        int type_id = q.value(0).toInt();
-                        DeleteItem("objects", id);
-//                        q.prepare("SELECT name FROM objects WHERE object_type_id = :type_id");
-//                        q.bindValue(":type_id", type_id);
-//                        q.exec();
-//                        q.next();
-//                        if (q.value(0).toInt() == 0) {
-//                            qDebug() << q.value(0).toInt();
-//                            DeleteItem("object_types", type_id); }
-                    }
-                //}
+                id = Search("objects");
+                if (id != NULL)
+                {
+                    DeleteItem("objects", id);
+                }
             }
         }
         delete ui->treeWidget->currentItem();
@@ -123,15 +97,6 @@ void MainWindow::on_DeleteButton_clicked()
 
 void MainWindow::Information()
 {
-//    QLabel* name_label = new QLabel("Диспетчерское наименование:");
-//    QLineEdit* name_edit = new QLineEdit;
-//    QDateEdit* date_of_test = new QDateEdit();
-//    ui->EditLayout->removeWidget(name_label);
-//    ui->EditLayout->removeWidget(name_edit);
-//    ui->EditLayout->removeWidget(date_of_test);
-//    ui->EditLayout->addWidget(date_of_test, 1, 0);
-//    ui->EditLayout->addWidget(name_label, 0, 0);
-//    ui->EditLayout->addWidget(name_edit, 0, 1);
     QString name;
     if (ui->treeWidget->currentItem()->text(0) != "")
     {
@@ -195,37 +160,6 @@ void MainWindow::ShowTree()
     ui->treeWidget->clear();
     QSqlQuery query;
     QStringList q;
-    /*q << "SELECT "
-            "areas.name, "
-            "substations.name, "
-            "object_types.name, "
-            "objects.name "
-         "FROM "
-            "areas, "
-            "substations, "
-            "object_types, "
-            "objects "
-         "WHERE "
-            "areas.id = substations.area_id AND "
-            "objects.substation_id = substations.id AND "
-            "objects.object_type_id = object_types.id;";*/
-
-//    q << "SELECT "
-//            "name "
-//         "FROM "
-//            "areas;";
-//    q << "SELECT "
-//            "substations.name, "
-//            "object_types.name, "
-//            "objects.name "
-//         "FROM "
-//             "substations, "
-//             "object_types, "
-//             "objects"
-//         "WHERE "
-//             "objects.substation_id = substations.id AND "
-//             "objects.object_type_id = object_types.id;";
-
 
     q << "SELECT "
             "areas.name, "
@@ -355,7 +289,6 @@ void MainWindow::UpdateItem(QString name_of_table, int id)
     query.prepare("UPDATE " + name_of_table + " SET name = :update_item WHERE id = :id");
     query.bindValue(":update_item", ui->NameLineEdit->text());
     query.bindValue(":id", id);
-    //query.bindValue(":current_item", ui->treeWidget->currentItem()->text(0));
     query.exec();
     query.next();
 }

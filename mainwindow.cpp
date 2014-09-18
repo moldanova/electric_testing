@@ -149,7 +149,6 @@ void MainWindow::Information()
 void MainWindow::FillDate(int id)
 {
     QSqlQuery query;
-    qDebug() << "id " << id;
     query.prepare("SELECT "
                     "date_test.last_test, "
                     "date_test.next_test "
@@ -161,8 +160,6 @@ void MainWindow::FillDate(int id)
     query.bindValue(":id", id);
     query.exec();
     query.next();
-    qDebug() << query.value(0).toDate();
-    qDebug() << query.value(1).toDate();
     ui->DateLastTest->setDate(query.value(0).toDate());
     ui->DateNextTest->setDate(query.value(1).toDate());
 }

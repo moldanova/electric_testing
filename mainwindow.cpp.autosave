@@ -224,9 +224,7 @@ void MainWindow::ShowTree()
             {
                 parent = tree_column.at(i);
                 child = tree_column.at(i+1);
-                //ui->treeWidget->currentItem()->parent();
                 items = ui->treeWidget->findItems(parent, Qt::MatchExactly | Qt::MatchRecursive, 0);
-                //qDebug() << items.value(0)->text(0);
                 if (items.isEmpty())
                 {
                     new_itm = new QTreeWidgetItem(ui->treeWidget);
@@ -239,7 +237,7 @@ void MainWindow::ShowTree()
                 {
                     AddChild(items.first(), child);
                 }
-            }//tree.Find(id1).Find(id2).Find(id3).Add(id4)
+            }
             tree_column.clear();
         }
     }
@@ -286,7 +284,6 @@ void MainWindow::ShowTree()
 
         tree_column.clear();
     }
-
 
     for (int i=0; i<q.size(); i++)
         ui->treeWidget->resizeColumnToContents(i);

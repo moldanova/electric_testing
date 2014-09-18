@@ -41,6 +41,7 @@ public:
     int Search(QString);
     void UpdateItem(QString, int);
     void FillDate(int);
+    void UpdateDate(int);
 
 private slots:
     void on_DeleteButton_clicked();

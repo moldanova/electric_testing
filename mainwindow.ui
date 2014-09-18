@@ -56,44 +56,85 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="formLayoutWidget">
+   <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>269</x>
-      <y>49</y>
-      <width>281</width>
-      <height>331</height>
+      <x>260</x>
+      <y>40</y>
+      <width>301</width>
+      <height>351</height>
      </rect>
     </property>
-    <layout class="QFormLayout" name="InformationLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="NameLabel">
-       <property name="text">
-        <string>Наименование:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="NameLineEdit"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="DateTestLabel">
-       <property name="text">
-        <string>Дата испатыния:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QDateEdit" name="DateTestEdit"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="SaveButton">
-       <property name="text">
-        <string>Сохранить</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QPushButton" name="SaveButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>320</y>
+       <width>269</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Сохранить</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>21</y>
+       <width>171</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="NameLabel">
+        <property name="text">
+         <string>Наименование:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="NameLineEdit"/>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>99</y>
+       <width>171</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="DateLastTestLabel">
+        <property name="text">
+         <string>Дата последнего испытания:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="DateLastTest"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="DateNextTestLabel">
+        <property name="text">
+         <string>Дата следующего испытания:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="DateNextTest"/>
+      </item>
+     </layout>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

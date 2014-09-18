@@ -12,6 +12,7 @@
 #include <QLineEdit>
 #include <QDateEdit>
 #include <QSqlRecord>
+#include <QDateEdit>
 #include "select_table.h"
 
 namespace Ui {
@@ -39,6 +40,7 @@ public:
     QString ShowInf(QString, int);
     int Search(QString);
     void UpdateItem(QString, int);
+    void FillDate(int);
 
 private slots:
     void on_DeleteButton_clicked();

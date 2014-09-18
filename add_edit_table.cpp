@@ -32,7 +32,6 @@ add_edit_table::~add_edit_table()
 
 void add_edit_table::change_substation()
 {
-    //ui->table_value_cb_2->clear();
     if (fa == 1)
     {
         fa = 0;

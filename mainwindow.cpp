@@ -23,8 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendData(QTreeWidget*)), new_st_form, SLOT(recieveData(QTreeWidget*))); // подключение сигнала к слоту нашей формы
     ui->NameLabel->setVisible(false);
     ui->NameLineEdit->setVisible(false);
-    ui->DateTestLabel->setVisible(false);
-    ui->DateTestEdit->setVisible(false);
+    ui->DateLastTest->setVisible(false);
+    ui->DateLastTestLabel->setVisible(false);
+    ui->DateNextTest->setVisible(false);
+    ui->DateNextTestLabel->setVisible(false);
     ui->SaveButton->setVisible(false);
 }
 
@@ -121,8 +123,6 @@ void MainWindow::Information()
                 {
                     ui->NameLabel->setVisible(false);
                     ui->NameLineEdit->setVisible(false);
-                    ui->DateTestLabel->setVisible(false);
-                    ui->DateTestEdit->setVisible(false);
                     ui->SaveButton->setVisible(false);
                 }
                 else
@@ -132,11 +132,39 @@ void MainWindow::Information()
                     {
                         name = ShowInf("objects", id);
                         ui->NameLineEdit->setText(name);
+                        ui->DateLastTest->setVisible(true);
+                        ui->DateLastTestLabel->setVisible(true);
+                        ui->DateNextTest->setVisible(true);
+                        ui->DateNextTestLabel->setVisible(true);
+                        ui->DateLastTest->clear();
+                        ui->DateNextTest->clear();
+                        FillDate(id);
                     }
                 }
             }
         }
     }
+}
+
+void MainWindow::FillDate(int id)
+{
+    QSqlQuery query;
+    qDebug() << "id " << id;
+    query.prepare("SELECT "
+                    "date_test.last_test, "
+                    "date_test.next_test "
+                  "FROM "
+                    "objects, "
+                    "date_test "
+                  "WHERE "
+                    "date_test.objects_id = :id;");
+    query.bindValue(":id", id);
+    query.exec();
+    query.next();
+    qDebug() << query.value(0).toDate();
+    qDebug() << query.value(1).toDate();
+    ui->DateLastTest->setDate(query.value(0).toDate());
+    ui->DateNextTest->setDate(query.value(1).toDate());
 }
 
 QString MainWindow::ShowInf(QString name_of_table, int id)
@@ -277,8 +305,10 @@ void MainWindow::on_treeWidget_clicked(const QModelIndex &index)
 {
     ui->NameLabel->setVisible(true);
     ui->NameLineEdit->setVisible(true);
-    ui->DateTestLabel->setVisible(true);
-    ui->DateTestEdit->setVisible(true);
+//    ui->DateLastTest->setVisible(true);
+//    ui->DateLastTestLabel->setVisible(true);
+//    ui->DateNextTest->setVisible(true);
+//    ui->DateNextTestLabel->setVisible(true);
     ui->SaveButton->setVisible(true);
     Information();
 }

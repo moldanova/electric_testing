@@ -14,7 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDateEdit>
-#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -41,13 +41,18 @@ public:
     QPushButton *AddButton;
     QPushButton *DeleteButton;
     QTreeWidget *treeWidget;
-    QWidget *formLayoutWidget;
-    QFormLayout *InformationLayout;
+    QGroupBox *groupBox;
+    QPushButton *SaveButton;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout_2;
     QLabel *NameLabel;
     QLineEdit *NameLineEdit;
-    QLabel *DateTestLabel;
-    QDateEdit *DateTestEdit;
-    QPushButton *SaveButton;
+    QWidget *widget1;
+    QVBoxLayout *verticalLayout_3;
+    QLabel *DateLastTestLabel;
+    QDateEdit *DateLastTest;
+    QLabel *DateNextTestLabel;
+    QDateEdit *DateNextTest;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -94,38 +99,57 @@ public:
 
         verticalLayout->addWidget(treeWidget);
 
-        formLayoutWidget = new QWidget(centralWidget);
-        formLayoutWidget->setObjectName(QStringLiteral("formLayoutWidget"));
-        formLayoutWidget->setGeometry(QRect(269, 49, 281, 331));
-        InformationLayout = new QFormLayout(formLayoutWidget);
-        InformationLayout->setSpacing(6);
-        InformationLayout->setContentsMargins(11, 11, 11, 11);
-        InformationLayout->setObjectName(QStringLiteral("InformationLayout"));
-        InformationLayout->setContentsMargins(0, 0, 0, 0);
-        NameLabel = new QLabel(formLayoutWidget);
+        groupBox = new QGroupBox(centralWidget);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        groupBox->setGeometry(QRect(260, 40, 301, 351));
+        SaveButton = new QPushButton(groupBox);
+        SaveButton->setObjectName(QStringLiteral("SaveButton"));
+        SaveButton->setGeometry(QRect(10, 320, 269, 23));
+        widget = new QWidget(groupBox);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(10, 21, 171, 61));
+        verticalLayout_2 = new QVBoxLayout(widget);
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        NameLabel = new QLabel(widget);
         NameLabel->setObjectName(QStringLiteral("NameLabel"));
 
-        InformationLayout->setWidget(0, QFormLayout::LabelRole, NameLabel);
+        verticalLayout_2->addWidget(NameLabel);
 
-        NameLineEdit = new QLineEdit(formLayoutWidget);
+        NameLineEdit = new QLineEdit(widget);
         NameLineEdit->setObjectName(QStringLiteral("NameLineEdit"));
 
-        InformationLayout->setWidget(0, QFormLayout::FieldRole, NameLineEdit);
+        verticalLayout_2->addWidget(NameLineEdit);
 
-        DateTestLabel = new QLabel(formLayoutWidget);
-        DateTestLabel->setObjectName(QStringLiteral("DateTestLabel"));
+        widget1 = new QWidget(groupBox);
+        widget1->setObjectName(QStringLiteral("widget1"));
+        widget1->setGeometry(QRect(10, 99, 171, 181));
+        verticalLayout_3 = new QVBoxLayout(widget1);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        DateLastTestLabel = new QLabel(widget1);
+        DateLastTestLabel->setObjectName(QStringLiteral("DateLastTestLabel"));
 
-        InformationLayout->setWidget(2, QFormLayout::LabelRole, DateTestLabel);
+        verticalLayout_3->addWidget(DateLastTestLabel);
 
-        DateTestEdit = new QDateEdit(formLayoutWidget);
-        DateTestEdit->setObjectName(QStringLiteral("DateTestEdit"));
+        DateLastTest = new QDateEdit(widget1);
+        DateLastTest->setObjectName(QStringLiteral("DateLastTest"));
 
-        InformationLayout->setWidget(2, QFormLayout::FieldRole, DateTestEdit);
+        verticalLayout_3->addWidget(DateLastTest);
 
-        SaveButton = new QPushButton(formLayoutWidget);
-        SaveButton->setObjectName(QStringLiteral("SaveButton"));
+        DateNextTestLabel = new QLabel(widget1);
+        DateNextTestLabel->setObjectName(QStringLiteral("DateNextTestLabel"));
 
-        InformationLayout->setWidget(3, QFormLayout::LabelRole, SaveButton);
+        verticalLayout_3->addWidget(DateNextTestLabel);
+
+        DateNextTest = new QDateEdit(widget1);
+        DateNextTest->setObjectName(QStringLiteral("DateNextTest"));
+
+        verticalLayout_3->addWidget(DateNextTest);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -150,9 +174,11 @@ public:
         actionAdd_row->setText(QApplication::translate("MainWindow", "Add row", 0));
         AddButton->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", 0));
         DeleteButton->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
-        NameLabel->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265:", 0));
-        DateTestLabel->setText(QApplication::translate("MainWindow", "\320\224\320\260\321\202\320\260 \320\270\321\201\320\277\320\260\321\202\321\213\320\275\320\270\321\217:", 0));
+        groupBox->setTitle(QString());
         SaveButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", 0));
+        NameLabel->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265:", 0));
+        DateLastTestLabel->setText(QApplication::translate("MainWindow", "\320\224\320\260\321\202\320\260 \320\277\320\276\321\201\320\273\320\265\320\264\320\275\320\265\320\263\320\276 \320\270\321\201\320\277\321\213\321\202\320\260\320\275\320\270\321\217:", 0));
+        DateNextTestLabel->setText(QApplication::translate("MainWindow", "\320\224\320\260\321\202\320\260 \321\201\320\273\320\265\320\264\321\203\321\216\321\211\320\265\320\263\320\276 \320\270\321\201\320\277\321\213\321\202\320\260\320\275\320\270\321\217:", 0));
     } // retranslateUi
 
 };

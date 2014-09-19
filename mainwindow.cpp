@@ -132,13 +132,29 @@ void MainWindow::Information()
                     {
                         name = ShowInf("objects", id);
                         ui->NameLineEdit->setText(name);
-                        ui->DateLastTest->setVisible(true);
-                        ui->DateLastTestLabel->setVisible(true);
-                        ui->DateNextTest->setVisible(true);
-                        ui->DateNextTestLabel->setVisible(true);
-                        ui->DateLastTest->clear();
-                        ui->DateNextTest->clear();
-                        FillDate(id);
+                        QSqlQuery q;
+                        q.prepare("SELECT DISTINCT date_test.id FROM date_test, objects WHERE date_test.objects_id = :id");
+                        q.bindValue(":id", id);
+                        q.exec();
+                        q.next();
+                        if (q.value(0).toString() != "")
+                        {
+                            ui->DateLastTest->setVisible(true);
+                            ui->DateLastTestLabel->setVisible(true);
+                            ui->DateNextTest->setVisible(true);
+                            ui->DateNextTestLabel->setVisible(true);
+                            ui->DateLastTest->clear();
+                            ui->DateNextTest->clear();
+                            FillDate(id);
+                        }
+                        else
+                        {
+                            qDebug() << "ffffff";
+                            ui->DateLastTest->setVisible(false);
+                            ui->DateLastTestLabel->setVisible(false);
+                            ui->DateNextTest->setVisible(false);
+                            ui->DateNextTestLabel->setVisible(false);
+                        }
                     }
                 }
             }
@@ -224,9 +240,7 @@ void MainWindow::ShowTree()
             {
                 parent = tree_column.at(i);
                 child = tree_column.at(i+1);
-                //ui->treeWidget->currentItem()->parent();
                 items = ui->treeWidget->findItems(parent, Qt::MatchExactly | Qt::MatchRecursive, 0);
-                //qDebug() << items.value(0)->text(0);
                 if (items.isEmpty())
                 {
                     new_itm = new QTreeWidgetItem(ui->treeWidget);
@@ -239,7 +253,7 @@ void MainWindow::ShowTree()
                 {
                     AddChild(items.first(), child);
                 }
-            }//tree.Find(id1).Find(id2).Find(id3).Add(id4)
+            }
             tree_column.clear();
         }
     }
@@ -286,7 +300,6 @@ void MainWindow::ShowTree()
 
         tree_column.clear();
     }
-
 
     for (int i=0; i<q.size(); i++)
         ui->treeWidget->resizeColumnToContents(i);
@@ -356,4 +369,9 @@ void MainWindow::UpdateDate(int id)
     query.exec();
     query.next();
     qDebug() << query.lastError().text();
+}
+
+void MainWindow::on_PredictionTests_triggered()
+{
+    qDebug() << "clicked!";
 }

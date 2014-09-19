@@ -49,6 +49,8 @@ private slots:
     void on_treeWidget_clicked(const QModelIndex &index);
     void on_SaveButton_clicked();
 
+    void on_PredictionTests_triggered();
+
 private:
     Ui::MainWindow *ui;
     select_table *new_st_form;

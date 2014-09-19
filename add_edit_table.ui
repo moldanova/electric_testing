@@ -17,10 +17,10 @@
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>52</x>
-      <y>33</y>
-      <width>471</width>
-      <height>351</height>
+      <x>32</x>
+      <y>22</y>
+      <width>521</width>
+      <height>341</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -32,13 +32,6 @@
      </item>
      <item>
       <widget class="QComboBox" name="table_value_cb_3"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="information_label">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -55,18 +48,50 @@
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="ok_pushButton">
-       <property name="text">
-        <string>Ок</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="DateLastTestLabel">
+         <property name="text">
+          <string>Дата последнего испытания:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDateEdit" name="DateLastTest"/>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="cancel_pushButton">
-       <property name="text">
-        <string>Отмена</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="DateNextTestLabel">
+         <property name="text">
+          <string>Дата следующего испытания:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDateEdit" name="DateNextTest"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="ok_pushButton">
+         <property name="text">
+          <string>Ок</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cancel_pushButton">
+         <property name="text">
+          <string>Отмена</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>

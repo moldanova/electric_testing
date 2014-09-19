@@ -21,8 +21,9 @@ select_table::select_table(QWidget *parent) :
     name_tables.insert("Подстанции", "substations");
     name_tables.insert("Типы объектов", "object_types");
     name_tables.insert("Объекты", "objects");
+    name_tables.insert("Испытания объектов на подстанциях", "date_test");
     QStringList name;
-    name << "Районы" << "Подстанции" << "Типы объектов" << "Объекты";
+    name << "Районы" << "Подстанции" << "Типы объектов" << "Объекты" << "Испытания объектов на подстанциях";
     ui->table_list->addItems(name);
 
     new_ae_form = new add_edit_table();

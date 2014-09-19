@@ -17,6 +17,7 @@ add_edit_table::add_edit_table(QWidget *parent) :
     name_tables.insert(2, "substations");
     name_tables.insert(3, "object_types");
     name_tables.insert(4, "objects");
+    name_tables.insert(5, "date_test");
     connect(ui->cancel_pushButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->table_value_cb_1, SIGNAL(currentIndexChanged(QString)), this, SLOT(change_substation()));
     connect(ui->table_value_cb_2, SIGNAL(currentIndexChanged(QString)), this, SLOT(change_object_type()));
@@ -75,9 +76,15 @@ void add_edit_table::recieveData(QTreeWidget* _tree, QString _name_of_table)
 {
     tree = _tree;
     name_of_table = _name_of_table;
+    ui->name_label->setVisible(true);
+    ui->name_lineEdit->setVisible(true);
     ui->table_value_cb_1->setVisible(false);
     ui->table_value_cb_2->setVisible(false);
     ui->table_value_cb_3->setVisible(false);
+    ui->DateLastTest->setVisible(false);
+    ui->DateLastTestLabel->setVisible(false);
+    ui->DateNextTest->setVisible(false);
+    ui->DateNextTestLabel->setVisible(false);
     ui->table_value_cb_1->clear();
     ui->table_value_cb_2->clear();
     ui->table_value_cb_3->clear();
@@ -88,7 +95,6 @@ void add_edit_table::recieveData(QTreeWidget* _tree, QString _name_of_table)
     {
         fa = 0;
         ui->table_value_cb_1->setVisible(true);
-        ui->information_label->setText("Новый элемент добавиться в таблицу: Подстанции");
         q = "SELECT name FROM areas";
         query.exec(q);
         while (query.next())
@@ -104,8 +110,7 @@ void add_edit_table::recieveData(QTreeWidget* _tree, QString _name_of_table)
         ui->table_value_cb_3->setVisible(true);
         ui->table_value_cb_1->clear();
         ui->table_value_cb_2->clear();
-        ui->table_value_cb_3->clear();
-        ui->information_label->setText("Новый элемент добавиться в таблицу: Объекты");
+        ui->table_value_cb_3->clear();;
         query.exec("SELECT name FROM areas");
         while (query.next())
         {
@@ -134,15 +139,24 @@ void add_edit_table::recieveData(QTreeWidget* _tree, QString _name_of_table)
         }
     }
     else if (name_of_table == "object_types")
+        fa = 0;
+    else if (name_of_table == "date_test")
     {
         fa = 0;
-        ui->information_label->setText("Новый элемент добавиться в таблицу: Типы объектов");
+        ui->name_label->setVisible(false);
+        ui->name_lineEdit->setVisible(false);
+        ui->DateLastTest->setVisible(true);
+        ui->DateLastTestLabel->setVisible(true);
+        ui->DateNextTest->setVisible(true);
+        ui->DateNextTestLabel->setVisible(true);
+        ui->table_value_cb_1->setVisible(true);
+        ui->table_value_cb_1->clear();
+        query.exec("SELECT name FROM objects ORDER BY id");
+        while (query.next())
+            ui->table_value_cb_1->addItem(query.value(0).toString());
     }
     else
-    {
         fa = 0;
-        ui->information_label->setText("Новый элемент добавиться в таблицу: Районы");
-    }
     fa = 1;
 }
 
@@ -231,6 +245,28 @@ void add_edit_table::on_ok_pushButton_clicked()
             query.bindValue(":substation_id", substation_id);
             query.bindValue(":object_type_id", object_type_id);
             query.bindValue(":name", ui->name_lineEdit->text());
+            query.exec();
+        }
+        else if (name_of_table == "date_test")
+        {
+            int id;
+            query.prepare("SELECT "
+                            "id "
+                          "FROM "
+                            "objects "
+                          "WHERE "
+                            "name = :name_of_table");
+            query.bindValue(":name_of_table", ui->table_value_cb_1->currentText());
+            query.exec();
+            while (query.next())
+                id = query.value(0).toInt();
+            query.prepare("INSERT INTO date_test "
+                            "(objects_id, last_test, next_test) "
+                          "VALUES "
+                            "(:id, :last_test, :next_test);");
+            query.bindValue(":id", id);
+            query.bindValue(":last_test", ui->DateLastTest->date());
+            query.bindValue(":next_test", ui->DateNextTest->date());
             query.exec();
         }
         MainWindow mw;

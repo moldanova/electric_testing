@@ -247,33 +247,40 @@ void add_edit_table::on_ok_pushButton_clicked()
             query.bindValue(":name", ui->name_lineEdit->text());
             query.exec();
         }
-        else if (name_of_table == "date_test")
-        {
-            int id;
-            query.prepare("SELECT "
-                            "id "
-                          "FROM "
-                            "objects "
-                          "WHERE "
-                            "name = :name_of_table");
-            query.bindValue(":name_of_table", ui->table_value_cb_1->currentText());
-            query.exec();
-            while (query.next())
-                id = query.value(0).toInt();
-            query.prepare("INSERT INTO date_test "
-                            "(objects_id, last_test, next_test) "
-                          "VALUES "
-                            "(:id, :last_test, :next_test);");
-            query.bindValue(":id", id);
-            query.bindValue(":last_test", ui->DateLastTest->date());
-            query.bindValue(":next_test", ui->DateNextTest->date());
-            query.exec();
-        }
         MainWindow mw;
         mw.RefreshTree(tree);
         ui->table_value_cb_1->clear();
         ui->table_value_cb_2->clear();
         ui->table_value_cb_3->clear();
+        this->close();
+    }
+    if (name_of_table == "date_test")
+    {
+        int id;
+        QSqlQuery query;
+        query.prepare("SELECT "
+                        "id "
+                      "FROM "
+                        "objects "
+                      "WHERE "
+                        "name = :name_of_table");
+        query.bindValue(":name_of_table", ui->table_value_cb_1->currentText());
+        query.exec();
+        while (query.next())
+            id = query.value(0).toInt();
+        query.prepare("INSERT INTO date_test "
+                        "(objects_id, last_test, next_test) "
+                      "VALUES "
+                        "(:id, :last_test, :next_test);");
+        query.bindValue(":id", id);
+        query.bindValue(":last_test", ui->DateLastTest->date());
+        query.bindValue(":next_test", ui->DateNextTest->date());
+        query.exec();
+        MainWindow mw;
+        mw.RefreshTree(tree);
+        ui->table_value_cb_1->clear();
+        ui->DateLastTest->clear();
+        ui->DateNextTest->clear();
         this->close();
     }
 }

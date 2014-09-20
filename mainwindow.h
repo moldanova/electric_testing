@@ -14,6 +14,7 @@
 #include <QSqlRecord>
 #include <QDateEdit>
 #include "select_table.h"
+#include "prediction_tests.h"
 
 namespace Ui {
 class MainWindow;

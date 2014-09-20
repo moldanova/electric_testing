@@ -89,6 +89,7 @@ void MainWindow::on_DeleteButton_clicked()
                 if (id != NULL)
                 {
                     DeleteItem("objects", id);
+                    ShowTree();
                 }
             }
         }
@@ -198,10 +199,16 @@ void MainWindow::RefreshTree(QTreeWidget* _tree)
 
 void MainWindow::ShowTree()
 {
+    ui->DateLastTest->setVisible(false);
+    ui->DateLastTestLabel->setVisible(false);
+    ui->DateNextTest->setVisible(false);
+    ui->DateNextTestLabel->setVisible(false);
+
     ui->treeWidget->clear();
     QSqlQuery query;
     QStringList q;
 
+    q << "SELECT name FROM areas";
     q << "SELECT "
             "areas.name, "
             "substations.name "
@@ -236,16 +243,17 @@ void MainWindow::ShowTree()
             QStringList tree_column;
             for (int i=0; i < column; i++)
                 tree_column << query.value(i).toString();
-            for (int i=0; i < column-1; i++)
-            {
-                parent = tree_column.at(i);
-                child = tree_column.at(i+1);
+            //for (int i=0; i < 2; i++)
+            //{
+                parent = tree_column.at(0);
+                if (column > 1)
+                    child = tree_column.at(1);
                 items = ui->treeWidget->findItems(parent, Qt::MatchExactly | Qt::MatchRecursive, 0);
                 if (items.isEmpty())
                 {
                     new_itm = new QTreeWidgetItem(ui->treeWidget);
                     new_itm->setText(0, parent);
-                    if (child != "")
+                    if (child != "" && column > 1)
                         AddChild(new_itm, child);
                     ui->treeWidget->setCurrentItem(new_itm);
                 }
@@ -253,7 +261,7 @@ void MainWindow::ShowTree()
                 {
                     AddChild(items.first(), child);
                 }
-            }
+            //}
             tree_column.clear();
         }
     }
@@ -272,7 +280,7 @@ void MainWindow::ShowTree()
             "areas.id = substations.area_id AND "
             "objects.substation_id = substations.id AND "
             "objects.object_type_id = object_types.id;";
-    query.exec(q.at(2));
+    query.exec(q.at(3));
     QSqlRecord rec = query.record();
     int column = rec.count();
     while (query.next())
@@ -316,6 +324,10 @@ void MainWindow::on_treeWidget_clicked(const QModelIndex &index)
     ui->NameLabel->setVisible(true);
     ui->NameLineEdit->setVisible(true);
     ui->SaveButton->setVisible(true);
+    ui->DateLastTest->setVisible(false);
+    ui->DateLastTestLabel->setVisible(false);
+    ui->DateNextTest->setVisible(false);
+    ui->DateNextTestLabel->setVisible(false);
     Information();
 }
 
@@ -373,5 +385,7 @@ void MainWindow::UpdateDate(int id)
 
 void MainWindow::on_PredictionTests_triggered()
 {
-    qDebug() << "clicked!";
+    prediction_tests *new_pt_form;
+    new_pt_form = new prediction_tests();
+    new_pt_form->show();
 }

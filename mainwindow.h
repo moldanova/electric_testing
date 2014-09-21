@@ -34,13 +34,12 @@ public:
 
     void AddRoot(QString name);
     void AddChild(QTreeWidgetItem *parent, QString name);
-    void AddItem();
     void ShowTree();
     void RefreshTree(QTreeWidget *_tree);
     void DeleteItem(QString, int);
     void Information();
     QString ShowInf(QString, int);
-    int Search(QString, QString);
+    int Search(QString);
     void UpdateItem(QString, int);
     void FillDate(int);
     void UpdateDate(int);
@@ -50,12 +49,14 @@ private slots:
     void onButtonSend();
     void on_treeWidget_clicked(const QModelIndex &index);
     void on_SaveButton_clicked();
-    //void slot_treeclicked(QTreeWidgetItem*, int);
+
     void on_PredictionTests_triggered();
 
 private:
     Ui::MainWindow *ui;
     select_table *new_st_form;
+    QMap<QString,QString> idToParent;
+    QMap<QString,QTreeWidgetItem*> idToItem;
 
 signals:
     void sendData(QTreeWidget*);

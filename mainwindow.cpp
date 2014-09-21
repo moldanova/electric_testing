@@ -16,11 +16,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("Испытания");
     ui->treeWidget->setColumnCount(1);
-    ui->treeWidget->setHeaderLabels(QStringList() << "one");
+    //ui->treeWidget->setHeaderLabels(QStringList() << "one");
     new_st_form = new select_table();
-    connect(ui->AddButton, SIGNAL(clicked()), new_st_form, SLOT(show()));// подключаем сигнал к слоту
-    connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onButtonSend())); // подключаем клик по кнопке к определенному нами слоту
-    connect(this, SIGNAL(sendData(QTreeWidget*)), new_st_form, SLOT(recieveData(QTreeWidget*))); // подключение сигнала к слоту нашей формы
+    //connect(ui->AddButton, SIGNAL(clicked()), new_st_form, SLOT(show()));// подключаем сигнал к слоту
+    //connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onButtonSend())); // подключаем клик по кнопке к определенному нами слоту
+    connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(AddItem()));
+    //connect(this, SIGNAL(sendData(QTreeWidget*)), new_st_form, SLOT(recieveData(QTreeWidget*))); // подключение сигнала к слоту нашей формы
+    //connect(ui->treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(slot_treeclicked(QTreeWidgetItem*, int)));
     ui->NameLabel->setVisible(false);
     ui->NameLineEdit->setVisible(false);
     ui->DateLastTest->setVisible(false);
@@ -35,16 +37,27 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::AddItem()
+{
+
+}
+
 void MainWindow::AddRoot(QString name)
 {
     QTreeWidgetItem *itm = new QTreeWidgetItem(ui->treeWidget);
     itm->setText(0, name);
+    int id = Search("object_types", name);
+    if (id == NULL)
+        itm->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled);
 }
 
 void MainWindow::AddChild(QTreeWidgetItem *parent, QString name)
 {
     QTreeWidgetItem *itm = new QTreeWidgetItem();
     itm->setText(0, name);
+    int id = Search("object_types", name);
+    if (id == NULL)
+        itm->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled);
     parent->addChild(itm);
 }
 
@@ -57,11 +70,11 @@ void MainWindow::DeleteItem(QString name_of_table, int id)
     query.next();
 }
 
-int MainWindow::Search(QString name_of_table)
+int MainWindow::Search(QString name_of_table, QString cur_item)
 {
     QSqlQuery query;
     query.prepare("SELECT id FROM " + name_of_table + " WHERE name = :current_item");
-    query.bindValue(":current_item", ui->treeWidget->currentItem()->text(0));
+    query.bindValue(":current_item", cur_item);
     query.exec();
     query.next();
     if (query.value(0).toString() != "")
@@ -75,17 +88,17 @@ void MainWindow::on_DeleteButton_clicked()
 {
     if (ui->treeWidget->currentItem()->text(0) != "")
     {
-        int id = Search("areas");
+        int id = Search("areas", ui->treeWidget->currentItem()->text(0));
         if (id != NULL)
             DeleteItem("areas", id);
         else
         {
-            id = Search("substations");
+            id = Search("substations", ui->treeWidget->currentItem()->text(0));
             if (id != NULL)
                 DeleteItem("substations", id);
             else
             {
-                id = Search("objects");
+                id = Search("objects", ui->treeWidget->currentItem()->text(0));
                 if (id != NULL)
                 {
                     DeleteItem("objects", id);
@@ -103,7 +116,7 @@ void MainWindow::Information()
     QString name;
     if (ui->treeWidget->currentItem()->text(0) != "")
     {
-        int id = Search("areas");
+        int id = Search("areas", ui->treeWidget->currentItem()->text(0));
         if (id != NULL)
         {
             name = ShowInf("areas", id);
@@ -111,7 +124,7 @@ void MainWindow::Information()
         }
         else
         {
-            id = Search("substations");
+            id = Search("substations", ui->treeWidget->currentItem()->text(0));
             if (id != NULL)
             {
                 name = ShowInf("substations", id);
@@ -119,7 +132,7 @@ void MainWindow::Information()
             }
             else
             {
-                id = Search("object_types");
+                id = Search("object_types", ui->treeWidget->currentItem()->text(0));
                 if (id != NULL)
                 {
                     ui->NameLabel->setVisible(false);
@@ -128,7 +141,7 @@ void MainWindow::Information()
                 }
                 else
                 {
-                    id = Search("objects");
+                    id = Search("objects", ui->treeWidget->currentItem()->text(0));
                     if (id != NULL)
                     {
                         name = ShowInf("objects", id);
@@ -150,7 +163,6 @@ void MainWindow::Information()
                         }
                         else
                         {
-                            qDebug() << "ffffff";
                             ui->DateLastTest->setVisible(false);
                             ui->DateLastTestLabel->setVisible(false);
                             ui->DateNextTest->setVisible(false);
@@ -236,6 +248,7 @@ void MainWindow::ShowTree()
     {
         query.exec(q.at(i));
         QSqlRecord rec = query.record();
+        //QString table = rec.
         int column = rec.count();
         while (query.next())
         {
@@ -251,11 +264,12 @@ void MainWindow::ShowTree()
                 items = ui->treeWidget->findItems(parent, Qt::MatchExactly | Qt::MatchRecursive, 0);
                 if (items.isEmpty())
                 {
-                    new_itm = new QTreeWidgetItem(ui->treeWidget);
-                    new_itm->setText(0, parent);
+//                    new_itm = new QTreeWidgetItem(ui->treeWidget);
+//                    new_itm->setText(0, parent);
+                    AddRoot(parent);
                     if (child != "" && column > 1)
                         AddChild(new_itm, child);
-                    ui->treeWidget->setCurrentItem(new_itm);
+                    //ui->treeWidget->setCurrentItem(new_itm);
                 }
                 else
                 {
@@ -343,19 +357,20 @@ void MainWindow::UpdateItem(QString name_of_table, int id)
 
 void MainWindow::on_SaveButton_clicked()
 {
-    if (ui->treeWidget->currentItem()->text(0) != "")
+    QString cur_item = ui->treeWidget->currentItem()->text(0);
+    if (cur_item != "")
     {
-        int id = Search("areas");
+        int id = Search("areas", cur_item);
         if (id != NULL)
             UpdateItem("areas", id);
         else
         {
-            id = Search("substations");
+            id = Search("substations", cur_item);
             if (id != NULL)
                 UpdateItem("substations", id);
             else
             {
-                id = Search("objects");
+                id = Search("objects", cur_item);
                 if (id != NULL)
                     UpdateItem("objects", id);
                 UpdateDate(id);

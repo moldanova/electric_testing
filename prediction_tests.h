@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QTableWidget>
 #include <QSqlQuery>
+#include <QDebug>
+#include <QTableWidgetItem>
+#include <QDate>
+#include <QDateTime>
 
 namespace Ui {
 class prediction_tests;
@@ -19,6 +23,10 @@ public:
 
 private slots:
     void on_ok_pb_clicked();
+
+    //void on_represent_clicked();
+
+    void on_represent_bt_clicked();
 
 private:
     Ui::prediction_tests *ui;

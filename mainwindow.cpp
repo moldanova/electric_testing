@@ -16,7 +16,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("Испытания");
     ui->treeWidget->setColumnCount(1);
-    ui->treeWidget->setHeaderLabels(QStringList() << "one");
+    //ui->treeWidget->setHeaderLabels(QStringList() << "one");
+
+
+//    area_count = GetCount("areas");
+//    substation_count = GetCount("substations");
+//    object_types_count = GetCount("object_types");
+//    objects_count = GetCount("obje"cts);
+
+
+
+
     new_st_form = new select_table();
     connect(ui->AddButton, SIGNAL(clicked()), new_st_form, SLOT(show()));// подключаем сигнал к слоту
     connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onButtonSend())); // подключаем клик по кнопке к определенному нами слоту
@@ -46,6 +56,55 @@ void MainWindow::AddChild(QTreeWidgetItem *parent, QString name)
     QTreeWidgetItem *itm = new QTreeWidgetItem();
     itm->setText(0, name);
     parent->addChild(itm);
+}
+
+//int MainWindow::GetCount(QString table)
+//{
+//    QSqlQuery query;
+//    query.prepare("SELECT COUNT(*) FROM :table");
+//    query.bindValue(":table", table);
+//    query.exec();
+//    query.next();
+//    return query.value(0).toInt();
+//}
+
+void MainWindow::FillHash()
+{
+    QSqlQuery query;
+    query.prepare(
+        "SELECT DISTINCT "
+           "areas.id, "
+           "substations.id, "
+           "object_types.id, "
+           "objects.id "
+        "FROM "
+           "areas, "
+           "substations, "
+           "object_types, "
+           "objects "
+        "WHERE "
+           "areas.id = substations.area_id AND "
+           "objects.substation_id = substations.id AND "
+           "objects.object_type_id = object_types.id;");
+    query.exec();
+//    int ***arr_db = new int **[area_count];
+//    for (int i=0; i<query.size(); i++)
+//    {
+//        *arr_db[i] = new int *[substation_count];
+//        for (int j=0; j<query.size(); i++)
+//            arr_db[i][j] = new int [query.size()];
+//    }
+    qDebug() << query.lastError().text();
+    while (query.next())
+    {
+        int id_area = query.value(0).toInt();
+        int id_substation = query.value(1).toInt();
+        int id_object_type = query.value(2).toInt();
+        int id_object = query.value(3).toInt();
+        area_subst[id_substation] = id_area;
+        subst_type[id_object_type] = id_substation;
+        type_obj[id_object] = id_object_type;
+    }
 }
 
 void MainWindow::DeleteItem(QString name_of_table, int id)
@@ -205,6 +264,7 @@ void MainWindow::ShowTree()
     ui->DateNextTestLabel->setVisible(false);
 
     ui->treeWidget->clear();
+    FillHash();
     QSqlQuery query;
     QStringList q;
 
@@ -388,4 +448,9 @@ void MainWindow::on_PredictionTests_triggered()
     prediction_tests *new_pt_form;
     new_pt_form = new prediction_tests();
     new_pt_form->show();
+}
+
+void MainWindow::on_AddButton_clicked()
+{
+
 }

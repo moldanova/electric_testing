@@ -13,6 +13,7 @@
 #include <QDateEdit>
 #include <QSqlRecord>
 #include <QDateEdit>
+#include <QHash>
 #include "select_table.h"
 #include "prediction_tests.h"
 
@@ -52,11 +53,21 @@ private slots:
 
     void on_PredictionTests_triggered();
 
+    void on_AddButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     select_table *new_st_form;
-    QMap<QString,QString> idToParent;
-    QMap<QString,QTreeWidgetItem*> idToItem;
+    //int*** arr_db;
+    QHash<int, int> area_subst;
+    QHash<int, int> subst_type;
+    QHash<int, int> type_obj;
+    void FillHash();
+    //int GetCount(QString table);
+//    int area_count;
+//    int substation_count;
+//    int object_types_count;
+//    int objects_count;
 
 signals:
     void sendData(QTreeWidget*);

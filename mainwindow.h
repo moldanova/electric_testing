@@ -9,12 +9,11 @@
 #include <QSqlQuery>
 #include <QSql>
 #include <QLabel>
-#include <QLineEdit>
-#include <QDateEdit>
 #include <QSqlRecord>
-#include <QDateEdit>
 #include <QHash>
-#include "prediction_tests.h"
+#include <prediction_tests.h>
+#include <add_item.h>
+#include <select_object_type.h>
 
 namespace Ui {
 class MainWindow;
@@ -49,14 +48,13 @@ private slots:
     void onButtonSend();
     void on_treeWidget_clicked(const QModelIndex &index);
     void on_SaveButton_clicked();
-
     void on_PredictionTests_triggered();
-
     void on_AddButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    //add_item *new_st_form;
+    add_item *add_item_form;
+    select_object_type *select_obj_type;
     //int*** arr_db;
     QHash<int, QString> areas;
     QHash<int, QString> subst;

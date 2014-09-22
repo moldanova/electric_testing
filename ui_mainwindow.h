@@ -45,11 +45,11 @@ public:
     QTreeWidget *treeWidget;
     QGroupBox *groupBox;
     QPushButton *SaveButton;
-    QWidget *widget;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_2;
     QLabel *NameLabel;
     QLineEdit *NameLineEdit;
-    QWidget *widget1;
+    QWidget *layoutWidget2;
     QVBoxLayout *verticalLayout_3;
     QLabel *DateLastTestLabel;
     QDateEdit *DateLastTest;
@@ -85,6 +85,7 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         AddButton = new QPushButton(layoutWidget);
         AddButton->setObjectName(QStringLiteral("AddButton"));
+        AddButton->setEnabled(true);
 
         horizontalLayout->addWidget(AddButton);
 
@@ -111,48 +112,48 @@ public:
         SaveButton = new QPushButton(groupBox);
         SaveButton->setObjectName(QStringLiteral("SaveButton"));
         SaveButton->setGeometry(QRect(10, 320, 269, 23));
-        widget = new QWidget(groupBox);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(10, 21, 171, 61));
-        verticalLayout_2 = new QVBoxLayout(widget);
+        layoutWidget1 = new QWidget(groupBox);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(10, 21, 171, 61));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        NameLabel = new QLabel(widget);
+        NameLabel = new QLabel(layoutWidget1);
         NameLabel->setObjectName(QStringLiteral("NameLabel"));
 
         verticalLayout_2->addWidget(NameLabel);
 
-        NameLineEdit = new QLineEdit(widget);
+        NameLineEdit = new QLineEdit(layoutWidget1);
         NameLineEdit->setObjectName(QStringLiteral("NameLineEdit"));
 
         verticalLayout_2->addWidget(NameLineEdit);
 
-        widget1 = new QWidget(groupBox);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(10, 99, 171, 181));
-        verticalLayout_3 = new QVBoxLayout(widget1);
+        layoutWidget2 = new QWidget(groupBox);
+        layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(10, 99, 171, 181));
+        verticalLayout_3 = new QVBoxLayout(layoutWidget2);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(0, 0, 0, 0);
-        DateLastTestLabel = new QLabel(widget1);
+        DateLastTestLabel = new QLabel(layoutWidget2);
         DateLastTestLabel->setObjectName(QStringLiteral("DateLastTestLabel"));
 
         verticalLayout_3->addWidget(DateLastTestLabel);
 
-        DateLastTest = new QDateEdit(widget1);
+        DateLastTest = new QDateEdit(layoutWidget2);
         DateLastTest->setObjectName(QStringLiteral("DateLastTest"));
 
         verticalLayout_3->addWidget(DateLastTest);
 
-        DateNextTestLabel = new QLabel(widget1);
+        DateNextTestLabel = new QLabel(layoutWidget2);
         DateNextTestLabel->setObjectName(QStringLiteral("DateNextTestLabel"));
 
         verticalLayout_3->addWidget(DateNextTestLabel);
 
-        DateNextTest = new QDateEdit(widget1);
+        DateNextTest = new QDateEdit(layoutWidget2);
         DateNextTest->setObjectName(QStringLiteral("DateNextTest"));
 
         verticalLayout_3->addWidget(DateNextTest);

@@ -356,6 +356,15 @@ void MainWindow::onButtonSend()
 
 void MainWindow::on_treeWidget_clicked(const QModelIndex &index)
 {
+    ui->DeleteButton->setEnabled(true);
+    ui->AddButton->setEnabled(true);
+    int cur_item_id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+    QString cur_item_text = ui->treeWidget->currentItem()->text(0);
+    if (obj_type[cur_item_id] == cur_item_text)
+        ui->DeleteButton->setEnabled(false);
+    else if (obj[cur_item_id] == cur_item_text)
+        ui->AddButton->setEnabled(false);
+
     ui->NameLabel->setVisible(true);
     ui->NameLineEdit->setVisible(true);
     ui->SaveButton->setVisible(true);
@@ -429,7 +438,21 @@ void MainWindow::on_AddButton_clicked()
 {
     int cur_item_id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
     QString cur_item_text = ui->treeWidget->currentItem()->text(0);
-    if (areas[cur_item_id] == cur_item_text);
-    //new_st_form = new add_item();
-    //new_st_form->setFixedSize(486, 414);
+    if (areas[cur_item_id] == cur_item_text)
+    {
+        add_item_form = new add_item();
+        add_item_form->GetTree(ui->treeWidget, "areas");
+        add_item_form->show();
+    }
+    else if (obj_type[cur_item_id] == cur_item_text)
+    {
+        add_item_form = new add_item();
+        add_item_form->GetTree(ui->treeWidget, "object_types");
+        add_item_form->show();
+    }
+    else if (subst[cur_item_id] == cur_item_text)
+    {
+        select_obj_type = new select_object_type();
+        select_obj_type->show();
+    }
 }

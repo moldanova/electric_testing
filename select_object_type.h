@@ -2,6 +2,7 @@
 #define SELECT_OBJECT_TYPE_H
 
 #include <QWidget>
+#include <QSqlQuery>
 
 namespace Ui {
 class select_object_type;
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::select_object_type *ui;
+    void FillList();
 };
 
 #endif // SELECT_OBJECT_TYPE_H

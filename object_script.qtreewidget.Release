@@ -5,8 +5,10 @@ INPUT(
 ./release\add_edit_table.o
 ./release\prediction_tests.o
 ./release\select_object_type.o
+./release\add_item.o
 ./release\moc_mainwindow.o
 ./release\moc_add_edit_table.o
 ./release\moc_prediction_tests.o
 ./release\moc_select_object_type.o
+./release\moc_add_item.o
 );

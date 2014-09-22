@@ -6,22 +6,45 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>382</height>
+    <width>391</width>
+    <height>418</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
      <width>371</width>
-     <height>361</height>
+     <height>401</height>
     </rect>
    </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QListWidget" name="type_list"/>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="back_pb">
+        <property name="text">
+         <string>Назад</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="next_pb">
+        <property name="text">
+         <string>Далее</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

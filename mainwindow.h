@@ -14,7 +14,6 @@
 #include <QSqlRecord>
 #include <QDateEdit>
 #include <QHash>
-#include "select_table.h"
 #include "prediction_tests.h"
 
 namespace Ui {
@@ -33,8 +32,8 @@ public:
 
     ~MainWindow();
 
-    void AddRoot(QString name);
-    void AddChild(QTreeWidgetItem *parent, QString name);
+    void AddRoot(QString name, int id);
+    void AddChild(QTreeWidgetItem *parent, QString name, int id);
     void ShowTree();
     void RefreshTree(QTreeWidget *_tree);
     void DeleteItem(QString, int);
@@ -57,17 +56,18 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    select_table *new_st_form;
+    //add_item *new_st_form;
     //int*** arr_db;
-    QHash<int, int> area_subst;
-    QHash<int, int> subst_type;
-    QHash<int, int> type_obj;
+    QHash<int, QString> areas;
+    QHash<int, QString> subst;
+    QHash<int, QString> obj_type;
+    QHash<int, QString> obj;
     void FillHash();
-    //int GetCount(QString table);
-//    int area_count;
-//    int substation_count;
-//    int object_types_count;
-//    int objects_count;
+    int GetCount(QString table);
+    int area_count;
+    int substation_count;
+    int object_types_count;
+    int objects_count;
 
 signals:
     void sendData(QTreeWidget*);

@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'select_table.ui'
+** Form generated from reading UI file 'add_item.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.2.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_SELECT_TABLE_H
-#define UI_SELECT_TABLE_H
+#ifndef UI_ADD_ITEM_H
+#define UI_ADD_ITEM_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -28,7 +28,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_select_table
+class Ui_add_item
 {
 public:
     QWidget *centralwidget;
@@ -47,12 +47,12 @@ public:
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
-    void setupUi(QMainWindow *select_table)
+    void setupUi(QMainWindow *add_item)
     {
-        if (select_table->objectName().isEmpty())
-            select_table->setObjectName(QStringLiteral("select_table"));
-        select_table->resize(314, 282);
-        centralwidget = new QWidget(select_table);
+        if (add_item->objectName().isEmpty())
+            add_item->setObjectName(QStringLiteral("add_item"));
+        add_item->resize(314, 282);
+        centralwidget = new QWidget(add_item);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         widget = new QWidget(centralwidget);
         widget->setObjectName(QStringLiteral("widget"));
@@ -111,35 +111,35 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout);
 
-        select_table->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(select_table);
+        add_item->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(add_item);
         menubar->setObjectName(QStringLiteral("menubar"));
         menubar->setGeometry(QRect(0, 0, 314, 21));
-        select_table->setMenuBar(menubar);
-        statusbar = new QStatusBar(select_table);
+        add_item->setMenuBar(menubar);
+        statusbar = new QStatusBar(add_item);
         statusbar->setObjectName(QStringLiteral("statusbar"));
-        select_table->setStatusBar(statusbar);
+        add_item->setStatusBar(statusbar);
 
-        retranslateUi(select_table);
+        retranslateUi(add_item);
 
-        QMetaObject::connectSlotsByName(select_table);
+        QMetaObject::connectSlotsByName(add_item);
     } // setupUi
 
-    void retranslateUi(QMainWindow *select_table)
+    void retranslateUi(QMainWindow *add_item)
     {
-        select_table->setWindowTitle(QApplication::translate("select_table", "MainWindow", 0));
-        name_label->setText(QApplication::translate("select_table", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265", 0));
-        typer_label->setText(QApplication::translate("select_table", "\320\242\320\270\320\277", 0));
-        ok_button->setText(QApplication::translate("select_table", "\320\236\320\272", 0));
-        cancel_button->setText(QApplication::translate("select_table", "\320\236\321\202\320\274\320\265\320\275\320\260", 0));
+        add_item->setWindowTitle(QApplication::translate("add_item", "MainWindow", 0));
+        name_label->setText(QApplication::translate("add_item", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265", 0));
+        typer_label->setText(QApplication::translate("add_item", "\320\242\320\270\320\277", 0));
+        ok_button->setText(QApplication::translate("add_item", "\320\236\320\272", 0));
+        cancel_button->setText(QApplication::translate("add_item", "\320\236\321\202\320\274\320\265\320\275\320\260", 0));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class select_table: public Ui_select_table {};
+    class add_item: public Ui_add_item {};
 } // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_SELECT_TABLE_H
+#endif // UI_ADD_ITEM_H

@@ -2,11 +2,11 @@ INPUT(
 ./debug\main.o
 ./debug\mainwindow.o
 ./debug\connect_to_db.o
-./debug\select_table.o
 ./debug\add_edit_table.o
 ./debug\prediction_tests.o
+./debug\select_object_type.o
 ./debug\moc_mainwindow.o
-./debug\moc_select_table.o
 ./debug\moc_add_edit_table.o
 ./debug\moc_prediction_tests.o
+./debug\moc_select_object_type.o
 );

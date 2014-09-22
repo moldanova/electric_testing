@@ -17,10 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("Испытания");
     ui->treeWidget->setColumnCount(1);
 
-    new_st_form = new select_table();
-    connect(ui->AddButton, SIGNAL(clicked()), new_st_form, SLOT(show()));// подключаем сигнал к слоту
-    connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onButtonSend())); // подключаем клик по кнопке к определенному нами слоту
-    connect(this, SIGNAL(sendData(QTreeWidget*)), new_st_form, SLOT(recieveData(QTreeWidget*))); // подключение сигнала к слоту нашей формы
+//    new_st_form = new add_item();
+//    new_st_form->setFixedSize(486, 414);
+//    connect(ui->AddButton, SIGNAL(clicked()), new_st_form, SLOT(show()));// подключаем сигнал к слоту
+//    connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onButtonSend())); // подключаем клик по кнопке к определенному нами слоту
+//    connect(this, SIGNAL(sendData(QTreeWidget*)), new_st_form, SLOT(recieveData(QTreeWidget*))); // подключение сигнала к слоту нашей формы
+
+
+
     ui->NameLabel->setVisible(false);
     ui->NameLineEdit->setVisible(false);
     ui->DateLastTest->setVisible(false);
@@ -35,49 +39,80 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::AddRoot(QString name)
+void MainWindow::AddRoot(QString name, int id)
 {
     QTreeWidgetItem *itm = new QTreeWidgetItem(ui->treeWidget);
+    itm->setData(0, Qt::UserRole, id);
     itm->setText(0, name);
 }
 
-void MainWindow::AddChild(QTreeWidgetItem *parent, QString name)
+void MainWindow::AddChild(QTreeWidgetItem *parent, QString name, int id)
 {
     QTreeWidgetItem *itm = new QTreeWidgetItem();
+    itm->setData(0, Qt::UserRole, id);
     itm->setText(0, name);
     parent->addChild(itm);
+}
+
+int MainWindow::GetCount(QString table)
+{
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM :table");
+    query.bindValue(":table", table);
+    query.exec();
+    query.next();
+    return query.value(0).toInt();
 }
 
 void MainWindow::FillHash()
 {
     QSqlQuery query;
-    query.prepare(
-        "SELECT DISTINCT "
-           "areas.id, "
-           "substations.id, "
-           "object_types.id, "
-           "objects.id "
-        "FROM "
-           "areas, "
-           "substations, "
-           "object_types, "
-           "objects "
-        "WHERE "
-           "areas.id = substations.area_id AND "
-           "objects.substation_id = substations.id AND "
-           "objects.object_type_id = object_types.id;");
+    query.prepare("SELECT * from areas");
     query.exec();
-    qDebug() << query.lastError().text();
     while (query.next())
-    {
-        int id_area = query.value(0).toInt();
-        int id_substation = query.value(1).toInt();
-        int id_object_type = query.value(2).toInt();
-        int id_object = query.value(3).toInt();
-        area_subst[id_substation] = id_area;
-        subst_type[id_object_type] = id_substation;
-        type_obj[id_object] = id_object_type;
-    }
+        areas[query.value(0).toInt()] = query.value(1).toString();
+
+    query.prepare("SELECT id, name from substations");
+    query.exec();
+    while (query.next())
+        subst[query.value(0).toInt()] = query.value(1).toString();
+
+    query.prepare("SELECT * from object_types");
+    query.exec();
+    while (query.next())
+        obj_type[query.value(0).toInt()] = query.value(1).toString();
+
+    query.prepare("SELECT id, name from objects");
+    query.exec();
+    while (query.next())
+        obj[query.value(0).toInt()] = query.value(1).toString();
+//    query.prepare(
+//        "SELECT DISTINCT "
+//           "areas.id, "
+//           "substations.id, "
+//           "object_types.id, "
+//           "objects.id "
+//        "FROM "
+//           "areas, "
+//           "substations, "
+//           "object_types, "
+//           "objects "
+//        "WHERE "
+//           "areas.id = substations.area_id AND "
+//           "objects.substation_id = substations.id AND "
+//           "objects.object_type_id = object_types.id;");
+//    query.exec();
+//    qDebug() << query.lastError().text();
+//    while (query.next())
+//    {
+//        int id_area = query.value(0).toInt();
+//        int id_substation = query.value(1).toInt();
+//        int id_object_type = query.value(2).toInt();
+//        int id_object = query.value(3).toInt();
+//        area_subst[id_substation] = id_area;
+//        subst_type[id_object_type] = id_substation;
+//        type_obj[id_object] = id_object_type;
+//    }
 }
 
 void MainWindow::DeleteItem(QString name_of_table, int id)
@@ -243,26 +278,26 @@ void MainWindow::ShowTree()
     QList<QTreeWidgetItem*> items;
     QString area, substation, object_type, object;
 
-    q = "SELECT name FROM areas";
+    q = "SELECT * FROM areas";
     query.exec(q);
     while (query.next())
-        AddRoot(query.value(0).toString());
+        AddRoot(query.value(1).toString(), query.value(0).toInt());
 
-    q = "SELECT areas.name, substations.name FROM areas, substations WHERE substations.area_id = areas.id";
+    q = "SELECT areas.name, substations.name, substations.id FROM areas, substations WHERE substations.area_id = areas.id";
     query.exec(q);
     while (query.next())
     {
         items = ui->treeWidget->findItems(query.value(0).toString(), Qt::MatchExactly | Qt::MatchRecursive, 0);
-        AddChild(items.first(), query.value(1).toString());
+        AddChild(items.first(), query.value(1).toString(), query.value(2).toInt());
     }
 
-    q = "SELECT DISTINCT substations.name, object_types.name FROM substations, object_types, objects "
+    q = "SELECT DISTINCT substations.name, object_types.name, object_types.id FROM substations, object_types, objects "
             "WHERE objects.substation_id = substations.id AND objects.object_type_id = object_types.id;";
     query.exec(q);
     while (query.next())
     {
         items = ui->treeWidget->findItems(query.value(0).toString(), Qt::MatchExactly | Qt::MatchRecursive, 0);
-        AddChild(items.first(), query.value(1).toString());
+        AddChild(items.first(), query.value(1).toString(), query.value(2).toInt());
     }
 
     q =
@@ -270,7 +305,8 @@ void MainWindow::ShowTree()
         "areas.name, "
         "substations.name, "
         "object_types.name, "
-        "objects.name "
+        "objects.name, "
+        "objects.id "
     "FROM "
         "areas, "
         "substations, "
@@ -296,92 +332,11 @@ void MainWindow::ShowTree()
             QString substation_text = substation_item->text(0);
             if (area_text == area && substation_text == substation)
             {
-                AddChild(items.at(i), object);
+                AddChild(items.at(i), object, query.value(4).toInt());
                 break;
             }
         }
     }
-
-    //QString parent, child, area, substation, object_type, object;
-    //QTreeWidgetItem *new_itm;
-
-
-//    for (int i=0; i < q.size(); i++)
-//    {
-//        query.exec(q.at(i));
-//        QSqlRecord rec = query.record();
-//        int column = rec.count();
-//        while (query.next())
-//        {
-//            //qDebug() << query.lastError().text();
-//            QStringList tree_column;
-//            for (int i=0; i < column; i++)
-//                tree_column << query.value(i).toString();
-//            //for (int i=0; i < 2; i++)
-//            //{
-//                parent = tree_column.at(0);
-//                if (column > 1)
-//                    child = tree_column.at(1);
-//                items = ui->treeWidget->findItems(parent, Qt::MatchExactly | Qt::MatchRecursive, 0);
-//                if (items.isEmpty())
-//                {
-//                    new_itm = new QTreeWidgetItem(ui->treeWidget);
-//                    new_itm->setText(0, parent);
-//                    if (child != "" && column > 1)
-//                        AddChild(new_itm, child);
-//                    ui->treeWidget->setCurrentItem(new_itm);
-//                }
-//                else
-//                {
-//                    AddChild(items.first(), child);
-//                }
-//            //}
-//            tree_column.clear();
-//        }
-//    }
-
-//    q << "SELECT DISTINCT "
-//            "areas.name, "
-//            "substations.name, "
-//            "object_types.name, "
-//            "objects.name "
-//         "FROM "
-//            "areas, "
-//            "substations, "
-//            "object_types, "
-//            "objects "
-//         "WHERE "
-//            "areas.id = substations.area_id AND "
-//            "objects.substation_id = substations.id AND "
-//            "objects.object_type_id = object_types.id;";
-//    query.exec(q.at(3));
-//    QSqlRecord rec = query.record();
-//    int column = rec.count();
-//    while (query.next())
-//    {
-//        QStringList tree_column;
-//        for (int i=0; i < column; i++)
-//            tree_column << query.value(i).toString();
-//        area = tree_column.at(0);
-//        substation = tree_column.at(1);
-//        object_type = tree_column.at(2);
-//        object = tree_column.at(3);
-//        items = ui->treeWidget->findItems(object_type, Qt::MatchExactly | Qt::MatchRecursive, 0);
-//        for (int i=0; i<items.length(); i++)
-//        {
-//            QTreeWidgetItem* substation_item = items.at(i)->parent();
-//            QTreeWidgetItem* area_item = substation_item->parent();
-//            QString area_text = area_item->text(0);
-//            QString substation_text = substation_item->text(0);
-//            if (area_text == area && substation_text == substation)
-//            {
-//                AddChild(items.at(i), object);
-//                break;
-//            }
-//        }
-
-//        tree_column.clear();
-//    }
 
     for (int i=0; i<q.size(); i++)
         ui->treeWidget->resizeColumnToContents(i);
@@ -390,7 +345,13 @@ void MainWindow::ShowTree()
 
 void MainWindow::onButtonSend()
 {
-    emit sendData(ui->treeWidget); // вызываем сигнал, в котором передаём введённые данные
+    /*area_count = GetCount("areas");
+    substation_count = GetCount("substations");
+    object_types_count = GetCount("object_types");
+    objects_count = GetCount("objects");
+    for (int i=0; i<substation_count; i++)*/
+    //if (areas[ui->treeWidget->currentItem()->data(0, Qt::UserRole)] == ui->treeWidget->currentItem()->text())
+    //emit sendData(ui->treeWidget); // вызываем сигнал, в котором передаём введённые данные
 }
 
 void MainWindow::on_treeWidget_clicked(const QModelIndex &index)
@@ -466,5 +427,9 @@ void MainWindow::on_PredictionTests_triggered()
 
 void MainWindow::on_AddButton_clicked()
 {
-
+    int cur_item_id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+    QString cur_item_text = ui->treeWidget->currentItem()->text(0);
+    if (areas[cur_item_id] == cur_item_text);
+    //new_st_form = new add_item();
+    //new_st_form->setFixedSize(486, 414);
 }

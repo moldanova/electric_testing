@@ -27,3 +27,16 @@ select_object_type::~select_object_type()
 {
     delete ui;
 }
+
+void select_object_type::on_back_pb_clicked()
+{
+    this->close();
+}
+
+void select_object_type::on_next_pb_clicked()
+{
+    add_item *add_item_form = new add_item();
+    add_item_form->GetTypeObj(ui->type_list->currentItem());
+    add_item_form->show();
+    this->close();
+}

@@ -86,33 +86,6 @@ void MainWindow::FillHash()
     query.exec();
     while (query.next())
         obj[query.value(0).toInt()] = query.value(1).toString();
-//    query.prepare(
-//        "SELECT DISTINCT "
-//           "areas.id, "
-//           "substations.id, "
-//           "object_types.id, "
-//           "objects.id "
-//        "FROM "
-//           "areas, "
-//           "substations, "
-//           "object_types, "
-//           "objects "
-//        "WHERE "
-//           "areas.id = substations.area_id AND "
-//           "objects.substation_id = substations.id AND "
-//           "objects.object_type_id = object_types.id;");
-//    query.exec();
-//    qDebug() << query.lastError().text();
-//    while (query.next())
-//    {
-//        int id_area = query.value(0).toInt();
-//        int id_substation = query.value(1).toInt();
-//        int id_object_type = query.value(2).toInt();
-//        int id_object = query.value(3).toInt();
-//        area_subst[id_substation] = id_area;
-//        subst_type[id_object_type] = id_substation;
-//        type_obj[id_object] = id_object_type;
-//    }
 }
 
 void MainWindow::DeleteItem(QString name_of_table, int id)
@@ -436,6 +409,8 @@ void MainWindow::on_PredictionTests_triggered()
 
 void MainWindow::on_AddButton_clicked()
 {
+    add_item *add_item_form = new add_item();
+    select_object_type *select_obj_type = new select_object_type();
     int cur_item_id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
     QString cur_item_text = ui->treeWidget->currentItem()->text(0);
     if (areas[cur_item_id] == cur_item_text)

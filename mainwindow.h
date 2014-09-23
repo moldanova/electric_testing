@@ -12,8 +12,8 @@
 #include <QSqlRecord>
 #include <QHash>
 #include <prediction_tests.h>
-#include <add_item.h>
-#include <select_object_type.h>
+#include "add_item.h"
+#include "select_object_type.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +42,7 @@ public:
     void UpdateItem(QString, int);
     void FillDate(int);
     void UpdateDate(int);
+    void FillHash();
 
 private slots:
     void on_DeleteButton_clicked();
@@ -53,14 +54,12 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    add_item *add_item_form;
-    select_object_type *select_obj_type;
-    //int*** arr_db;
+    //add_item *add_item_form;
+    //select_object_type *select_obj_type;
     QHash<int, QString> areas;
     QHash<int, QString> subst;
     QHash<int, QString> obj_type;
     QHash<int, QString> obj;
-    void FillHash();
     int GetCount(QString table);
     int area_count;
     int substation_count;

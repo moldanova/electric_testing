@@ -18,10 +18,12 @@ void add_item::GetTree(QTreeWidget *_tree, QString _table)
     FillCB();
 }
 
-void add_item::GetTypeObj(QListWidgetItem* _type_itm)
+void add_item::GetTypeObj(QTreeWidget *_tree, QListWidgetItem* _type_itm)
 {
     type_itm = _type_itm;
     table = "object_types";
+    tree = _tree;
+    sot = 1;
     FillCB();
 }
 
@@ -33,7 +35,7 @@ void add_item::FillCB()
         ui->type_cb->setVisible(true);
         ui->type_label->setVisible(true);
         QSqlQuery q;
-        if (type_itm->text() != "")
+        if (sot == 1)
         {
             q.prepare("SELECT id FROM object_types WHERE name = :type");
             q.bindValue(":type", type_itm->text());
@@ -66,6 +68,7 @@ void add_item::on_ok_pb_clicked()
     if (ui->name_edit->text() != "")
     {
         QSqlQuery query;
+        MainWindow mw;
         if (table == "areas")
         {
             int id;
@@ -78,56 +81,40 @@ void add_item::on_ok_pb_clicked()
             query.bindValue(":id", id);
             query.bindValue(":name", ui->name_edit->text());
             query.exec();
+            query.next();
             QTreeWidgetItem *itm = new QTreeWidgetItem();
             itm->setText(0, ui->name_edit->text());
             itm->setData(0, Qt::UserRole, query.value(0).toInt());
             tree->currentItem()->addChild(itm);
         }
-        else if (table == "substations")
+        else if (table == "object_types" && sot == 1)
         {
-            int area_id, substation_id, object_type_id;
-            area_id = tree->currentItem()->parent()->data(0, Qt::UserRole).toInt();
-            substation_id = tree->currentItem()->data(0, Qt::UserRole).toInt();
-            object_type_id = type_itm->data(Qt::UserRole).toInt();
-            query.prepare("INSERT INTO objects "
-                            "(substation_id, object_type_id, name) "
-                          "VALUES "
-                            "(:substation_id, :object_type_id, :name) "
-                          "RETURNING id");
-            query.bindValue(":substation_id", substation_id);
-            query.bindValue(":object_type_id", object_type_id);
-            query.bindValue(":name", ui->name_edit->text());
-            query.exec();
-            QTreeWidgetItem *itm = new QTreeWidgetItem();
-            itm->setText(0, ui->name_edit->text());
-            itm->setData(0, Qt::UserRole, query.value(0).toInt());
+            mw.FillHash();
+            int index = -1;
             for (int i=0; i<tree->currentItem()->childCount(); i++)
-                if (tree->currentItem()->child(i)->text(0) == type_itm->text())
+                if (tree->currentItem()->child(i)->data(0, Qt::UserRole).toInt() ==
+                        type_itm->data(Qt::UserRole).toInt())
                 {
-                    tree->currentItem()->child(i)->addChild(itm);
+                    index = i;
+                    tree->setCurrentItem(tree->currentItem()->child(index));
                     break;
                 }
+            if (index == -1)
+            {
+                QTreeWidgetItem *tree_itm = new QTreeWidgetItem();
+                tree_itm->setText(0, type_itm->text());
+                tree_itm->setData(0, Qt::UserRole, type_itm->data(Qt::UserRole).toInt());
+                tree->currentItem()->addChild(tree_itm);
+                tree->setCurrentItem(tree_itm);
+            }
+
+            AddObject();
+            sot = 0;
         }
         else if (table == "object_types")
         {
-            int area_id, substation_id, object_type_id;
-            area_id = tree->currentItem()->parent()->parent()->data(0, Qt::UserRole).toInt();
-            substation_id = tree->currentItem()->parent()->data(0, Qt::UserRole).toInt();
-            object_type_id = tree->currentItem()->data(0, Qt::UserRole).toInt();
-            query.prepare("INSERT INTO objects "
-                            "(substation_id, object_type_id, name) "
-                          "VALUES "
-                            "(:substation_id, :object_type_id, :name);");
-            query.bindValue(":substation_id", substation_id);
-            query.bindValue(":object_type_id", object_type_id);
-            query.bindValue(":name", ui->name_edit->text());
-            query.exec();
-            QTreeWidgetItem *itm = new QTreeWidgetItem();
-            itm->setText(0, ui->name_edit->text());
-            itm->setData(0, Qt::UserRole, query.value(0).toInt());
-            tree->currentItem()->addChild(itm);
+            AddObject();
         }
-        MainWindow mw;
         //mw.RefreshTree(tree);
         mw.FillHash();
         ui->type_cb->clear();
@@ -162,4 +149,28 @@ void add_item::on_ok_pb_clicked()
         ui->DateNextTest->clear();
         this->close();
     }*/
+}
+
+void add_item::AddObject()
+{
+    QSqlQuery query;
+    int area_id, substation_id, object_type_id;
+    area_id = tree->currentItem()->parent()->parent()->data(0, Qt::UserRole).toInt();
+    substation_id = tree->currentItem()->parent()->data(0, Qt::UserRole).toInt();
+    object_type_id = tree->currentItem()->data(0, Qt::UserRole).toInt();
+    query.prepare("INSERT INTO objects "
+                    "(substation_id, object_type_id, name, subtype_id) "
+                  "VALUES "
+                    "(:substation_id, :object_type_id, :name, :subtype_id) "
+                  "RETURNING id");
+    query.bindValue(":substation_id", substation_id);
+    query.bindValue(":object_type_id", object_type_id);
+    query.bindValue(":name", ui->name_edit->text());
+    query.bindValue(":subtype_id", ui->type_cb->currentData(Qt::UserRole).toInt());
+    query.exec();
+    query.next();
+    QTreeWidgetItem *itm = new QTreeWidgetItem();
+    itm->setText(0, ui->name_edit->text());
+    itm->setData(0, Qt::UserRole, query.value(0).toInt());
+    tree->currentItem()->addChild(itm);
 }

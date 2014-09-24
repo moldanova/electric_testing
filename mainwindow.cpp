@@ -17,14 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("Испытания");
     ui->treeWidget->setColumnCount(1);
 
-//    new_st_form = new add_item();
-//    new_st_form->setFixedSize(486, 414);
-//    connect(ui->AddButton, SIGNAL(clicked()), new_st_form, SLOT(show()));// подключаем сигнал к слоту
-//    connect(ui->AddButton, SIGNAL(clicked()), this, SLOT(onButtonSend())); // подключаем клик по кнопке к определенному нами слоту
-//    connect(this, SIGNAL(sendData(QTreeWidget*)), new_st_form, SLOT(recieveData(QTreeWidget*))); // подключение сигнала к слоту нашей формы
-
-
-
     ui->NameLabel->setVisible(false);
     ui->NameLineEdit->setVisible(false);
     ui->DateLastTest->setVisible(false);
@@ -318,13 +310,7 @@ void MainWindow::ShowTree()
 
 void MainWindow::onButtonSend()
 {
-    /*area_count = GetCount("areas");
-    substation_count = GetCount("substations");
-    object_types_count = GetCount("object_types");
-    objects_count = GetCount("objects");
-    for (int i=0; i<substation_count; i++)*/
-    //if (areas[ui->treeWidget->currentItem()->data(0, Qt::UserRole)] == ui->treeWidget->currentItem()->text())
-    //emit sendData(ui->treeWidget); // вызываем сигнал, в котором передаём введённые данные
+    //
 }
 
 void MainWindow::on_treeWidget_clicked(const QModelIndex &index)
@@ -409,6 +395,7 @@ void MainWindow::on_PredictionTests_triggered()
 
 void MainWindow::on_AddButton_clicked()
 {
+    FillHash();
     add_item *add_item_form = new add_item();
     select_object_type *select_obj_type = new select_object_type();
     int cur_item_id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
@@ -428,6 +415,7 @@ void MainWindow::on_AddButton_clicked()
     else if (subst[cur_item_id] == cur_item_text)
     {
         select_obj_type = new select_object_type();
+        select_obj_type->GetTree(ui->treeWidget);
         select_obj_type->show();
     }
 }

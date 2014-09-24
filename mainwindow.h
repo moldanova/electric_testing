@@ -43,6 +43,10 @@ public:
     void FillDate(int);
     void UpdateDate(int);
     void FillHash();
+    QHash<int, QString> areas;
+    QHash<int, QString> subst;
+    QHash<int, QString> obj_type;
+    QHash<int, QString> obj;
 
 private slots:
     void on_DeleteButton_clicked();
@@ -56,10 +60,6 @@ private:
     Ui::MainWindow *ui;
     //add_item *add_item_form;
     //select_object_type *select_obj_type;
-    QHash<int, QString> areas;
-    QHash<int, QString> subst;
-    QHash<int, QString> obj_type;
-    QHash<int, QString> obj;
     int GetCount(QString table);
     int area_count;
     int substation_count;

@@ -4,7 +4,9 @@
 #include <QWidget>
 #include <QSqlQuery>
 #include <add_item.h>
+#include <QListWidget>
 #include <QListWidgetItem>
+#include <QTreeWidget>
 
 namespace Ui {
 class select_object_type;
@@ -16,6 +18,7 @@ class select_object_type : public QWidget
 
 public:
     explicit select_object_type(QWidget *parent = 0);
+    void GetTree(QTreeWidget *_tree);
     ~select_object_type();
 
 private slots:
@@ -26,6 +29,7 @@ private slots:
 private:
     Ui::select_object_type *ui;
     void FillList();
+    QTreeWidget *tree;
 };
 
 #endif // SELECT_OBJECT_TYPE_H

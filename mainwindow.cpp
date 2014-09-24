@@ -91,41 +91,39 @@ void MainWindow::DeleteItem(QString name_of_table, int id)
 
 int MainWindow::Search(QString name_of_table)
 {
-    QSqlQuery query;
-    query.prepare("SELECT id FROM " + name_of_table + " WHERE name = :current_item");
-    query.bindValue(":current_item", ui->treeWidget->currentItem()->text(0));
-    query.exec();
-    query.next();
-    if (query.value(0).toString() != "")
-        return query.value(0).toInt();
-    else
-        return NULL;
+//    QSqlQuery query;
+//    query.prepare("SELECT id FROM " + name_of_table + " WHERE name = :current_item");
+//    query.bindValue(":current_item", ui->treeWidget->currentItem()->text(0));
+//    query.exec();
+//    query.next();
+//    if (query.value(0).toString() != "")
+//        return query.value(0).toInt();
+//    else
+//        return NULL;
 
 }
 
 void MainWindow::on_DeleteButton_clicked()
 {
-    if (ui->treeWidget->currentItem()->text(0) != "")
+    int id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+    QString text = ui->treeWidget->currentItem()->text(0);
+    if (areas[id] == text)
     {
-        int id = Search("areas");
-        if (id != NULL)
-            DeleteItem("areas", id);
-        else
-        {
-            id = Search("substations");
-            if (id != NULL)
-                DeleteItem("substations", id);
-            else
-            {
-                id = Search("objects");
-                if (id != NULL)
-                {
-                    DeleteItem("objects", id);
-                    ShowTree();
-                }
-            }
-        }
+        DeleteItem("areas", id);
         delete ui->treeWidget->currentItem();
+    }
+    else if (subst[id] == text)
+    {
+        DeleteItem("substations", id);
+        delete ui->treeWidget->currentItem();
+    }
+    else if (obj[id] == text)
+    {
+        DeleteItem("objects", id);
+        delete ui->treeWidget->currentItem();
+        if (ui->treeWidget->currentItem()->text(0)
+                == obj_type[ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt()])
+            delete ui->treeWidget->currentItem();
     }
     ui->NameLineEdit->setText(ui->treeWidget->currentItem()->text(0));
 }

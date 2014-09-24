@@ -53,6 +53,9 @@ private slots:
     void on_SaveButton_clicked();
     void on_PredictionTests_triggered();
     void on_AddButton_clicked();
+    void ShowDateTest(bool on_off);
+
+    void on_add_date_test_pb_clicked();
 
 private:
     Ui::MainWindow *ui;

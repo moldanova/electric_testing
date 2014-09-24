@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[10];
-    char stringdata[159];
+    QByteArrayData data[13];
+    char stringdata[207];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,13 +38,17 @@ QT_MOC_LITERAL(5, 58, 21),
 QT_MOC_LITERAL(6, 80, 5),
 QT_MOC_LITERAL(7, 86, 21),
 QT_MOC_LITERAL(8, 108, 28),
-QT_MOC_LITERAL(9, 137, 20)
+QT_MOC_LITERAL(9, 137, 20),
+QT_MOC_LITERAL(10, 158, 12),
+QT_MOC_LITERAL(11, 171, 6),
+QT_MOC_LITERAL(12, 178, 27)
     },
     "MainWindow\0sendData\0\0QTreeWidget*\0"
     "on_DeleteButton_clicked\0on_treeWidget_clicked\0"
     "index\0on_SaveButton_clicked\0"
     "on_PredictionTests_triggered\0"
-    "on_AddButton_clicked\0"
+    "on_AddButton_clicked\0ShowDateTest\0"
+    "on_off\0on_add_date_test_pb_clicked\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -54,7 +58,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -62,14 +66,16 @@ static const uint qt_meta_data_MainWindow[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   44,    2, 0x06,
+       1,    1,   54,    2, 0x06,
 
  // slots: name, argc, parameters, tag, flags
-       4,    0,   47,    2, 0x08,
-       5,    1,   48,    2, 0x08,
-       7,    0,   51,    2, 0x08,
-       8,    0,   52,    2, 0x08,
-       9,    0,   53,    2, 0x08,
+       4,    0,   57,    2, 0x08,
+       5,    1,   58,    2, 0x08,
+       7,    0,   61,    2, 0x08,
+       8,    0,   62,    2, 0x08,
+       9,    0,   63,    2, 0x08,
+      10,    1,   64,    2, 0x08,
+      12,    0,   67,    2, 0x08,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    2,
@@ -79,6 +85,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::QModelIndex,    6,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Bool,   11,
     QMetaType::Void,
 
        0        // eod
@@ -95,6 +103,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->on_SaveButton_clicked(); break;
         case 4: _t->on_PredictionTests_triggered(); break;
         case 5: _t->on_AddButton_clicked(); break;
+        case 6: _t->ShowDateTest((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 7: _t->on_add_date_test_pb_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -145,13 +155,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 8;
     }
     return _id;
 }

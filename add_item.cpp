@@ -115,40 +115,10 @@ void add_item::on_ok_pb_clicked()
         {
             AddObject();
         }
-        //mw.RefreshTree(tree);
         mw.FillHash();
         ui->type_cb->clear();
         this->close();
     }
-    /*if (table == "date_test")
-    {
-        int id;
-        QSqlQuery query;
-        query.prepare("SELECT "
-                        "id "
-                      "FROM "
-                        "objects "
-                      "WHERE "
-                        "name = :table");
-        query.bindValue(":table", ui->table_value_cb_1->currentText());
-        query.exec();
-        while (query.next())
-            id = query.value(0).toInt();
-        query.prepare("INSERT INTO date_test "
-                        "(objects_id, last_test, next_test) "
-                      "VALUES "
-                        "(:id, :last_test, :next_test);");
-        query.bindValue(":id", id);
-        query.bindValue(":last_test", ui->DateLastTest->date());
-        query.bindValue(":next_test", ui->DateNextTest->date());
-        query.exec();
-        MainWindow mw;
-        mw.RefreshTree(tree);
-        ui->table_value_cb_1->clear();
-        ui->DateLastTest->clear();
-        ui->DateNextTest->clear();
-        this->close();
-    }*/
 }
 
 void add_item::AddObject()

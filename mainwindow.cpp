@@ -19,16 +19,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->NameLabel->setVisible(false);
     ui->NameLineEdit->setVisible(false);
-    ui->DateLastTest->setVisible(false);
-    ui->DateLastTestLabel->setVisible(false);
-    ui->DateNextTest->setVisible(false);
-    ui->DateNextTestLabel->setVisible(false);
+    ui->type_label->setVisible(false);
+    ui->type_cb->setVisible(false);
+
+    ui->date_test_gb->setVisible(false);
+    ui->add_date_test_pb->setVisible(false);
+    ShowDateTest(false);
+
     ui->SaveButton->setVisible(false);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::ShowDateTest(bool on_off)
+{
+    ui->DateLastTest->setVisible(on_off);
+    ui->DateLastTestLabel->setVisible(on_off);
+    ui->DateNextTest->setVisible(on_off);
+    ui->DateNextTestLabel->setVisible(on_off);
 }
 
 void MainWindow::AddRoot(QString name, int id)
@@ -113,17 +124,18 @@ void MainWindow::on_DeleteButton_clicked()
     }
     if (ui->treeWidget->currentItem()->text(0) !=
             obj_type[ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt()])
+    {
         ui->NameLineEdit->setText(ui->treeWidget->currentItem()->text(0));
+        ui->treeWidget->clicked(ui->treeWidget->currentIndex());
+    }
     else
     {
         ui->NameLabel->setVisible(false);
         ui->NameLineEdit->setVisible(false);
-        ui->DateLastTest->setVisible(false);
-        ui->DateLastTestLabel->setVisible(false);
-        ui->DateNextTest->setVisible(false);
-        ui->DateNextTestLabel->setVisible(false);
+        ShowDateTest(false);
         ui->SaveButton->setVisible(false);
     }
+    ui->date_test_gb->setVisible(false);
     FillHash();
 }
 
@@ -159,22 +171,45 @@ void MainWindow::Information()
             q.bindValue(":id", id);
             q.exec();
             q.next();
-            if (q.value(0).toString() != "")
+            QString date_test = q.value(0).toString();
+            qDebug() << id;
+
+            ui->type_label->setVisible(true);
+            ui->type_cb->setVisible(true);
+            q.prepare("SELECT DISTINCT subtypes.id, subtypes.name FROM subtypes, object_types WHERE subtypes.object_type_id = :id");
+            q.bindValue(":id", ui->treeWidget->currentItem()->parent()->data(0, Qt::UserRole).toInt());
+            q.exec();
+            while (q.next())
+                ui->type_cb->addItem(q.value(1).toString(), q.value(0).toInt());
+
+            q.prepare("SELECT objects.subtype_id FROM objects WHERE objects.id = :id");
+            q.bindValue(":id", ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt());
+            q.exec();
+            q.next();
+            int subtype_id = q.value(0).toInt();
+            q.prepare("SELECT DISTINCT name FROM subtypes WHERE subtypes.id = :id");
+            q.bindValue(":id", subtype_id);
+            q.exec();
+            q.next();
+
+            ui->type_cb->setCurrentText(q.value(0).toString());
+
+            if (date_test != "")
             {
-                ui->DateLastTest->setVisible(true);
-                ui->DateLastTestLabel->setVisible(true);
-                ui->DateNextTest->setVisible(true);
-                ui->DateNextTestLabel->setVisible(true);
+                ShowDateTest(true);
+                ui->date_test_gb->setVisible(true);
                 ui->DateLastTest->clear();
                 ui->DateNextTest->clear();
+                ui->add_date_test_pb->setVisible(false);
+                qDebug() << id;
                 FillDate(id);
             }
             else
             {
-                ui->DateLastTest->setVisible(false);
-                ui->DateLastTestLabel->setVisible(false);
-                ui->DateNextTest->setVisible(false);
-                ui->DateNextTestLabel->setVisible(false);
+                ShowDateTest(false);
+                ui->date_test_gb->setVisible(false);
+                ui->add_date_test_pb->setVisible(true);
+                ui->SaveButton->setEnabled(false);
             }
         }
     }
@@ -195,6 +230,7 @@ void MainWindow::FillDate(int id)
     query.bindValue(":id", id);
     query.exec();
     query.next();
+    qDebug() << query.value(0).toDate();
     ui->DateLastTest->setDate(query.value(0).toDate());
     ui->DateNextTest->setDate(query.value(1).toDate());
 }
@@ -307,11 +343,15 @@ void MainWindow::on_treeWidget_clicked(const QModelIndex &index)
 
     ui->NameLabel->setVisible(true);
     ui->NameLineEdit->setVisible(true);
+    ui->type_label->setVisible(false);
+    ui->type_cb->setVisible(false);
+    ui->type_cb->clear();
     ui->SaveButton->setVisible(true);
-    ui->DateLastTest->setVisible(false);
-    ui->DateLastTestLabel->setVisible(false);
-    ui->DateNextTest->setVisible(false);
-    ui->DateNextTestLabel->setVisible(false);
+
+    ShowDateTest(false);
+    ui->date_test_gb->setVisible(false);
+
+    FillHash();
     Information();
 }
 
@@ -341,26 +381,22 @@ void MainWindow::on_SaveButton_clicked()
             UpdateDate(id);
         }
     }
-    ui->treeWidget->currentItem()->setText(0, ui->NameLineEdit->text());
+    //ui->treeWidget->currentItem()->setText(0, ui->NameLineEdit->text());
     FillHash();
 }
 
 void MainWindow::UpdateDate(int id)
 {
     QSqlQuery query;
-    query.prepare("UPDATE "
-                    "date_test "
-                  "SET "
-                    "last_test = :last_test, "
-                    "next_test = :next_test "
-                  "WHERE "
-                    "objects_id = :id");
+    query.prepare("INSERT INTO date_test "
+                    "(objects_id, last_test, next_test) "
+                  "VALUES "
+                    "(:id, :last_test, :next_test);");
+    query.bindValue(":id", id);
     query.bindValue(":last_test", ui->DateLastTest->date());
     query.bindValue(":next_test", ui->DateNextTest->date());
-    query.bindValue(":id", id);
     query.exec();
     query.next();
-    qDebug() << query.lastError().text();
 }
 
 void MainWindow::on_PredictionTests_triggered()
@@ -395,4 +431,15 @@ void MainWindow::on_AddButton_clicked()
         select_obj_type->GetTree(ui->treeWidget);
         select_obj_type->show();
     }
+}
+
+void MainWindow::on_add_date_test_pb_clicked()
+{
+    ui->add_date_test_pb->setVisible(false);
+    ui->date_test_gb->setVisible(true);
+    ShowDateTest(true);
+    QDate date = QDate::currentDate();
+    ui->DateLastTest->setDate(date);
+    ui->DateNextTest->setDate(date.addYears(2));
+    ui->SaveButton->setEnabled(true);
 }

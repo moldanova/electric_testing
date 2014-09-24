@@ -59,85 +59,98 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QPushButton" name="SaveButton">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>40</y>
-      <width>301</width>
-      <height>351</height>
+      <x>270</x>
+      <y>350</y>
+      <width>101</width>
+      <height>31</height>
      </rect>
     </property>
-    <property name="title">
-     <string/>
+    <property name="text">
+     <string>Сохранить</string>
     </property>
-    <widget class="QPushButton" name="SaveButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>320</y>
-       <width>269</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Сохранить</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>21</y>
-       <width>171</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="NameLabel">
-        <property name="text">
-         <string>Наименование:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="NameLineEdit"/>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>99</y>
-       <width>171</width>
-       <height>181</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QLabel" name="DateLastTestLabel">
-        <property name="text">
-         <string>Дата последнего испытания:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDateEdit" name="DateLastTest"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="DateNextTestLabel">
-        <property name="text">
-         <string>Дата следующего испытания:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDateEdit" name="DateNextTest"/>
-      </item>
-     </layout>
-    </widget>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>160</y>
+      <width>178</width>
+      <height>148</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QPushButton" name="add_date_test_pb">
+       <property name="text">
+        <string>Добавить даты испытаний</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="date_test_gb">
+       <property name="title">
+        <string>Даты испытаний</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="DateLastTestLabel">
+          <property name="text">
+           <string>Дата последнего испытания:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="DateLastTest"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="DateNextTestLabel">
+          <property name="text">
+           <string>Дата следующего испытания:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="DateNextTest"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>51</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="NameLabel">
+       <property name="text">
+        <string>Наименование:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="NameLineEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="type_label">
+       <property name="text">
+        <string>Тип:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="type_cb"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

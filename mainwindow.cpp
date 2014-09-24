@@ -89,20 +89,6 @@ void MainWindow::DeleteItem(QString name_of_table, int id)
     query.next();
 }
 
-int MainWindow::Search(QString name_of_table)
-{
-//    QSqlQuery query;
-//    query.prepare("SELECT id FROM " + name_of_table + " WHERE name = :current_item");
-//    query.bindValue(":current_item", ui->treeWidget->currentItem()->text(0));
-//    query.exec();
-//    query.next();
-//    if (query.value(0).toString() != "")
-//        return query.value(0).toInt();
-//    else
-//        return NULL;
-
-}
-
 void MainWindow::on_DeleteButton_clicked()
 {
     int id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
@@ -125,72 +111,74 @@ void MainWindow::on_DeleteButton_clicked()
                 == obj_type[ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt()])
             delete ui->treeWidget->currentItem();
     }
-    ui->NameLineEdit->setText(ui->treeWidget->currentItem()->text(0));
+    if (ui->treeWidget->currentItem()->text(0) !=
+            obj_type[ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt()])
+        ui->NameLineEdit->setText(ui->treeWidget->currentItem()->text(0));
+    else
+    {
+        ui->NameLabel->setVisible(false);
+        ui->NameLineEdit->setVisible(false);
+        ui->DateLastTest->setVisible(false);
+        ui->DateLastTestLabel->setVisible(false);
+        ui->DateNextTest->setVisible(false);
+        ui->DateNextTestLabel->setVisible(false);
+        ui->SaveButton->setVisible(false);
+    }
+    FillHash();
 }
 
 void MainWindow::Information()
 {
     QString name;
+    int id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+    QString text = ui->treeWidget->currentItem()->text(0);
     if (ui->treeWidget->currentItem()->text(0) != "")
     {
-        int id = Search("areas");
-        if (id != NULL)
+        if (areas[id] == text)
         {
             name = ShowInf("areas", id);
             ui->NameLineEdit->setText(name);
         }
-        else
+        else if (subst[id] == text)
         {
-            id = Search("substations");
-            if (id != NULL)
+            name = ShowInf("substations", id);
+            ui->NameLineEdit->setText(name);
+        }
+        else if (obj_type[id] == text)
+        {
+            ui->NameLabel->setVisible(false);
+            ui->NameLineEdit->setVisible(false);
+            ui->SaveButton->setVisible(false);
+        }
+        else if (obj[id] == text)
+        {
+            name = ShowInf("objects", id);
+            ui->NameLineEdit->setText(name);
+            QSqlQuery q;
+            q.prepare("SELECT DISTINCT date_test.id FROM date_test, objects WHERE date_test.objects_id = :id");
+            q.bindValue(":id", id);
+            q.exec();
+            q.next();
+            if (q.value(0).toString() != "")
             {
-                name = ShowInf("substations", id);
-                ui->NameLineEdit->setText(name);
+                ui->DateLastTest->setVisible(true);
+                ui->DateLastTestLabel->setVisible(true);
+                ui->DateNextTest->setVisible(true);
+                ui->DateNextTestLabel->setVisible(true);
+                ui->DateLastTest->clear();
+                ui->DateNextTest->clear();
+                FillDate(id);
             }
             else
             {
-                id = Search("object_types");
-                if (id != NULL)
-                {
-                    ui->NameLabel->setVisible(false);
-                    ui->NameLineEdit->setVisible(false);
-                    ui->SaveButton->setVisible(false);
-                }
-                else
-                {
-                    id = Search("objects");
-                    if (id != NULL)
-                    {
-                        name = ShowInf("objects", id);
-                        ui->NameLineEdit->setText(name);
-                        QSqlQuery q;
-                        q.prepare("SELECT DISTINCT date_test.id FROM date_test, objects WHERE date_test.objects_id = :id");
-                        q.bindValue(":id", id);
-                        q.exec();
-                        q.next();
-                        if (q.value(0).toString() != "")
-                        {
-                            ui->DateLastTest->setVisible(true);
-                            ui->DateLastTestLabel->setVisible(true);
-                            ui->DateNextTest->setVisible(true);
-                            ui->DateNextTestLabel->setVisible(true);
-                            ui->DateLastTest->clear();
-                            ui->DateNextTest->clear();
-                            FillDate(id);
-                        }
-                        else
-                        {
-                            qDebug() << "ffffff";
-                            ui->DateLastTest->setVisible(false);
-                            ui->DateLastTestLabel->setVisible(false);
-                            ui->DateNextTest->setVisible(false);
-                            ui->DateNextTestLabel->setVisible(false);
-                        }
-                    }
-                }
+                ui->DateLastTest->setVisible(false);
+                ui->DateLastTestLabel->setVisible(false);
+                ui->DateNextTest->setVisible(false);
+                ui->DateNextTestLabel->setVisible(false);
             }
         }
     }
+
 }
 
 void MainWindow::FillDate(int id)
@@ -306,11 +294,6 @@ void MainWindow::ShowTree()
     ui->treeWidget->setSortingEnabled(false);
 }
 
-void MainWindow::onButtonSend()
-{
-    //
-}
-
 void MainWindow::on_treeWidget_clicked(const QModelIndex &index)
 {
     ui->DeleteButton->setEnabled(true);
@@ -344,26 +327,22 @@ void MainWindow::UpdateItem(QString name_of_table, int id)
 
 void MainWindow::on_SaveButton_clicked()
 {
+    int id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+    QString text = ui->treeWidget->currentItem()->text(0);
     if (ui->treeWidget->currentItem()->text(0) != "")
     {
-        int id = Search("areas");
-        if (id != NULL)
+        if (areas[id] == text)
             UpdateItem("areas", id);
-        else
+        else if (subst[id] == text)
+            UpdateItem("substations", id);
+        else if (obj[id] == text)
         {
-            id = Search("substations");
-            if (id != NULL)
-                UpdateItem("substations", id);
-            else
-            {
-                id = Search("objects");
-                if (id != NULL)
-                    UpdateItem("objects", id);
-                UpdateDate(id);
-            }
+            UpdateItem("objects", id);
+            UpdateDate(id);
         }
     }
     ui->treeWidget->currentItem()->setText(0, ui->NameLineEdit->text());
+    FillHash();
 }
 
 void MainWindow::UpdateDate(int id)

@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QTableWidget>
 #include <QSqlQuery>
+#include <QDate>
+#include <QDebug>
+#include <mainwindow.h>
 
 namespace Ui {
 class prediction_tests;

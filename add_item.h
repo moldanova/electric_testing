@@ -34,6 +34,7 @@ private:
     QTreeWidget *tree;
     QString table;
     QListWidgetItem *type_itm;
+    QHash<QString, QString> table_hash;
     bool sot = 0;
     void FillCB();
     void AddObject();

@@ -172,7 +172,6 @@ void MainWindow::Information()
             q.exec();
             q.next();
             QString date_test = q.value(0).toString();
-            qDebug() << id;
 
             ui->type_label->setVisible(true);
             ui->type_cb->setVisible(true);
@@ -201,7 +200,6 @@ void MainWindow::Information()
                 ui->DateLastTest->clear();
                 ui->DateNextTest->clear();
                 ui->add_date_test_pb->setVisible(false);
-                qDebug() << id;
                 FillDate(id);
             }
             else
@@ -230,7 +228,6 @@ void MainWindow::FillDate(int id)
     query.bindValue(":id", id);
     query.exec();
     query.next();
-    qDebug() << query.value(0).toDate();
     ui->DateLastTest->setDate(query.value(0).toDate());
     ui->DateNextTest->setDate(query.value(1).toDate());
 }

@@ -9,12 +9,16 @@ add_item::add_item(QWidget *parent) :
     this->setFixedSize(401, 239);
     ui->type_cb->setVisible(false);
     ui->type_label->setVisible(false);
+    table_hash["areas"] = "Подстанции";
+    table_hash["substations"] = "Типы объектов";
+    table_hash["object_types"] = "Объекты";
 }
 
 void add_item::GetTree(QTreeWidget *_tree, QString _table)
 {
     tree = _tree;
     table = _table;
+    this->setWindowTitle("Добавление в таблицу : " + table_hash[table]);
     FillCB();
 }
 
@@ -22,6 +26,7 @@ void add_item::GetTypeObj(QTreeWidget *_tree, QListWidgetItem* _type_itm)
 {
     type_itm = _type_itm;
     table = "object_types";
+    this->setWindowTitle("Добавление в таблицу : " + table_hash[table]);
     tree = _tree;
     sot = 1;
     FillCB();

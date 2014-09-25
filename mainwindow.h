@@ -41,6 +41,7 @@ public:
     void UpdateItem(QString, int);
     void FillDate(int);
     void UpdateDate(int);
+    void AddDate(int);
     void FillHash();
     QHash<int, QString> areas;
     QHash<int, QString> subst;
@@ -56,6 +57,8 @@ private slots:
     void ShowDateTest(bool on_off);
 
     void on_add_date_test_pb_clicked();
+
+    void on_add_dt_fin_pb_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -72,13 +72,45 @@
      <string>Сохранить</string>
     </property>
    </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>51</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="NameLabel">
+       <property name="text">
+        <string>Наименование:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="NameLineEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="type_label">
+       <property name="text">
+        <string>Тип:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="type_cb"/>
+     </item>
+    </layout>
+   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>270</x>
-      <y>160</y>
+      <y>161</y>
       <width>178</width>
-      <height>148</height>
+      <height>177</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -118,37 +150,12 @@
        </layout>
       </widget>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>51</y>
-      <width>181</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QLabel" name="NameLabel">
+      <widget class="QPushButton" name="add_dt_fin_pb">
        <property name="text">
-        <string>Наименование:</string>
+        <string>Добавить</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="NameLineEdit"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="type_label">
-       <property name="text">
-        <string>Тип:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="type_cb"/>
      </item>
     </layout>
    </widget>

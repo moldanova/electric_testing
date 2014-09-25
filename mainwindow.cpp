@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->date_test_gb->setVisible(false);
     ui->add_date_test_pb->setVisible(false);
+    ui->add_dt_fin_pb->setVisible(false);
     ShowDateTest(false);
 
     ui->SaveButton->setVisible(false);
@@ -207,7 +208,7 @@ void MainWindow::Information()
                 ShowDateTest(false);
                 ui->date_test_gb->setVisible(false);
                 ui->add_date_test_pb->setVisible(true);
-                ui->SaveButton->setEnabled(false);
+                //ui->SaveButton->setEnabled(false);
             }
         }
     }
@@ -385,6 +386,18 @@ void MainWindow::on_SaveButton_clicked()
 void MainWindow::UpdateDate(int id)
 {
     QSqlQuery query;
+    query.prepare("UPDATE date_test SET last_test = :last_test, next_test = :next_test WHERE objects_id = :id;");
+    query.bindValue(":id", id);
+    query.bindValue(":last_test", ui->DateLastTest->date());
+    query.bindValue(":next_test", ui->DateNextTest->date());
+    query.exec();
+    query.next();
+    qDebug() << id << ui->DateLastTest->date() << ui->DateNextTest->date();
+}
+
+void MainWindow::AddDate(int id)
+{
+    QSqlQuery query;
     query.prepare("INSERT INTO date_test "
                     "(objects_id, last_test, next_test) "
                   "VALUES "
@@ -433,10 +446,19 @@ void MainWindow::on_AddButton_clicked()
 void MainWindow::on_add_date_test_pb_clicked()
 {
     ui->add_date_test_pb->setVisible(false);
+    ui->add_dt_fin_pb->setVisible(true);
     ui->date_test_gb->setVisible(true);
     ShowDateTest(true);
     QDate date = QDate::currentDate();
     ui->DateLastTest->setDate(date);
     ui->DateNextTest->setDate(date.addYears(2));
-    ui->SaveButton->setEnabled(true);
+}
+
+void MainWindow::on_add_dt_fin_pb_clicked()
+{
+    ui->add_dt_fin_pb->setVisible(false);
+    int id = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+    AddDate(id);
+    FillHash();
+    //ui->SaveButton->setEnabled(true);
 }

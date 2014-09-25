@@ -45,6 +45,12 @@ public:
     QPushButton *DeleteButton;
     QTreeWidget *treeWidget;
     QPushButton *SaveButton;
+    QWidget *layoutWidget1;
+    QVBoxLayout *verticalLayout_2;
+    QLabel *NameLabel;
+    QLineEdit *NameLineEdit;
+    QLabel *type_label;
+    QComboBox *type_cb;
     QWidget *widget;
     QVBoxLayout *verticalLayout_4;
     QPushButton *add_date_test_pb;
@@ -54,12 +60,7 @@ public:
     QDateEdit *DateLastTest;
     QLabel *DateNextTestLabel;
     QDateEdit *DateNextTest;
-    QWidget *widget1;
-    QVBoxLayout *verticalLayout_2;
-    QLabel *NameLabel;
-    QLineEdit *NameLineEdit;
-    QLabel *type_label;
-    QComboBox *type_cb;
+    QPushButton *add_dt_fin_pb;
     QMenuBar *menuBar;
     QMenu *menu;
     QToolBar *mainToolBar;
@@ -114,9 +115,37 @@ public:
         SaveButton = new QPushButton(centralWidget);
         SaveButton->setObjectName(QStringLiteral("SaveButton"));
         SaveButton->setGeometry(QRect(270, 350, 101, 31));
+        layoutWidget1 = new QWidget(centralWidget);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(270, 51, 181, 91));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget1);
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        NameLabel = new QLabel(layoutWidget1);
+        NameLabel->setObjectName(QStringLiteral("NameLabel"));
+
+        verticalLayout_2->addWidget(NameLabel);
+
+        NameLineEdit = new QLineEdit(layoutWidget1);
+        NameLineEdit->setObjectName(QStringLiteral("NameLineEdit"));
+
+        verticalLayout_2->addWidget(NameLineEdit);
+
+        type_label = new QLabel(layoutWidget1);
+        type_label->setObjectName(QStringLiteral("type_label"));
+
+        verticalLayout_2->addWidget(type_label);
+
+        type_cb = new QComboBox(layoutWidget1);
+        type_cb->setObjectName(QStringLiteral("type_cb"));
+
+        verticalLayout_2->addWidget(type_cb);
+
         widget = new QWidget(centralWidget);
         widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(270, 160, 178, 148));
+        widget->setGeometry(QRect(270, 161, 178, 177));
         verticalLayout_4 = new QVBoxLayout(widget);
         verticalLayout_4->setSpacing(6);
         verticalLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -156,33 +185,10 @@ public:
 
         verticalLayout_4->addWidget(date_test_gb);
 
-        widget1 = new QWidget(centralWidget);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(270, 51, 181, 91));
-        verticalLayout_2 = new QVBoxLayout(widget1);
-        verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        NameLabel = new QLabel(widget1);
-        NameLabel->setObjectName(QStringLiteral("NameLabel"));
+        add_dt_fin_pb = new QPushButton(widget);
+        add_dt_fin_pb->setObjectName(QStringLiteral("add_dt_fin_pb"));
 
-        verticalLayout_2->addWidget(NameLabel);
-
-        NameLineEdit = new QLineEdit(widget1);
-        NameLineEdit->setObjectName(QStringLiteral("NameLineEdit"));
-
-        verticalLayout_2->addWidget(NameLineEdit);
-
-        type_label = new QLabel(widget1);
-        type_label->setObjectName(QStringLiteral("type_label"));
-
-        verticalLayout_2->addWidget(type_label);
-
-        type_cb = new QComboBox(widget1);
-        type_cb->setObjectName(QStringLiteral("type_cb"));
-
-        verticalLayout_2->addWidget(type_cb);
+        verticalLayout_4->addWidget(add_dt_fin_pb);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -214,12 +220,13 @@ public:
         AddButton->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", 0));
         DeleteButton->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
         SaveButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", 0));
+        NameLabel->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265:", 0));
+        type_label->setText(QApplication::translate("MainWindow", "\320\242\320\270\320\277:", 0));
         add_date_test_pb->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214 \320\264\320\260\321\202\321\213 \320\270\321\201\320\277\321\213\321\202\320\260\320\275\320\270\320\271", 0));
         date_test_gb->setTitle(QApplication::translate("MainWindow", "\320\224\320\260\321\202\321\213 \320\270\321\201\320\277\321\213\321\202\320\260\320\275\320\270\320\271", 0));
         DateLastTestLabel->setText(QApplication::translate("MainWindow", "\320\224\320\260\321\202\320\260 \320\277\320\276\321\201\320\273\320\265\320\264\320\275\320\265\320\263\320\276 \320\270\321\201\320\277\321\213\321\202\320\260\320\275\320\270\321\217:", 0));
         DateNextTestLabel->setText(QApplication::translate("MainWindow", "\320\224\320\260\321\202\320\260 \321\201\320\273\320\265\320\264\321\203\321\216\321\211\320\265\320\263\320\276 \320\270\321\201\320\277\321\213\321\202\320\260\320\275\320\270\321\217:", 0));
-        NameLabel->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265:", 0));
-        type_label->setText(QApplication::translate("MainWindow", "\320\242\320\270\320\277:", 0));
+        add_dt_fin_pb->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", 0));
         menu->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\320\275\321\216", 0));
     } // retranslateUi
 
